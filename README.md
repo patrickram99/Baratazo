@@ -12,8 +12,8 @@ Este es un proyecto monorepo que contiene un backend en Express y un frontend en
 Para clonar el repositorio, ejecuta el siguiente comando en tu terminal:
 
 ```bash
-git clone https://github.com/tu-usuario/baratazo.git
-cd baratazo
+git clone https://github.com/patrickram99/Baratazo.git
+cd Baratazo
 ```
 
 ## Instalación
