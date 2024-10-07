@@ -105,10 +105,4 @@ Para instalar nuevos paquetes en un workspace específico, usa el flag `-w`:
 
 1. Asegúrate de que tu código pase el linter y esté formateado correctamente antes de hacer commit.
 2. Sigue las convenciones de commit establecidas en el proyecto.
-
-## Licencia
-
-[Incluye aquí la información de la licencia]
-```
-
-Este README proporciona instrucciones básicas para clonar, instalar y ejecutar el proyecto, así como información sobre cómo instalar paquetes en cada workspace. Asegúrate de personalizar cualquier detalle específico de tu proyecto, como la URL del repositorio, los puertos exactos si son diferentes, y la información de la licencia.
+3. El commit solo se considera valido si sigue el formato de [https://www.conventionalcommits.org/en/v1.0.0/#summary](https://www.conventionalcommits.org/en/v1.0.0/#summary)
