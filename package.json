@@ -6,7 +6,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "backend": "npm run dev -w backend",
     "frontend": "npm run dev -w frontend",
-    "start": "concurrently \"npm run backend\" \"npm run frontend\""
+    "start": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "prepare": "husky",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
+    "format": "prettier --write ."
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +19,12 @@
     "frontend"
   ],
   "devDependencies": {
-    "concurrently": "^9.0.1"
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
+    "concurrently": "^9.0.1",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0"
   }
 }
