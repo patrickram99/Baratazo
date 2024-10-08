@@ -1,0 +1,26 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #fff;
+  }
+  
+  .header-logo img {
+    width: 50px;
+    max-width: 40px; /* Ajusta el tamaño de la imagen */
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+  .header-info p {
+    font-size: 12px;
+  }
+  
+  .header-contact button {
+    background-color: #007BFF;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+  }
+  
