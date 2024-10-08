@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Modelo para Usuarios
+model Usuario {
+  id          Int      @id @default(autoincrement()) // Identificador único
+  nombre      String                                   // Nombre del usuario
+  apellido    String                                   // Apellido del usuario
+  email       String   @unique                        // Correo electrónico único
+  password  String                                   // Contraseña del usuario
+  direccion   String?                                  // Dirección del usuario (opcional)
+  createdAt   DateTime @default(now())                // Fecha de creación
+}
+
+// Modelo para Productos
+model Producto {
+  id                Int      @id @default(autoincrement()) // Identificador único
+  nombre            String                                   // Nombre del producto
+  descripcion       String                                   // Descripción del producto
+  stockDisponible    Int                                      // Stock disponible
+  precio            Float                                    // Precio del producto
+  categoria         String                                   // Categoría del producto
+  createdAt        DateTime @default(now())                // Fecha de creación
+}
+
+// Modelo para Promociones
+model Promocion {
+  id               Int      @id @default(autoincrement()) // Identificador único
+  porcentajeDescuento Int                                    // Porcentaje de descuento
+  fechaInicio      DateTime                                 // Fecha de inicio de la promoción
+  fechaFin         DateTime                                 // Fecha de fin de la promoción
+  descripcion      String                                   // Descripción de la promoción
+  condiciones      Bytes                                     // Condiciones en formato BLOB
+  createdAt        DateTime @default(now())                // Fecha de creación
+}
