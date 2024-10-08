@@ -1,4 +1,6 @@
 {
-    "exec": "ts-node --files server.ts",
-    "ext": ".ts,.js"
+  "watch": ["src", "backend"],
+  "ext": "ts,js",
+  "ignore": ["node_modules"],
+  "exec": "tsx server.ts"
 }
