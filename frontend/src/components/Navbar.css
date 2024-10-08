@@ -1,0 +1,45 @@
+/* Estilos para la barra de navegación */
+.navbar {
+    background-color: #007BFF; /* Fondo azul */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  /* Estilos para la caja de búsqueda */
+  .navbar-search input {
+    width: 200px;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    background-color: #ffffff; /* Fondo blanco */
+    color: #333; /* Texto en gris oscuro */
+  }
+  
+  /* Estilos para los botones */
+  .btn {
+    background: none;
+    border: none;
+    color: #ffffff; /* Color de texto blanco para contrastar */
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  
+  .btn i {
+    font-size: 20px;
+    margin-right: 5px;
+  }
+  
+  /* Cambia el color de los íconos al pasar el mouse */
+  .btn:hover i {
+    color: #cccccc; /* Color gris claro en hover */
+  }
+  
+  /* Estilo para botones de sesión y carrito de compras */
+  .btn .fas {
+    font-size: 18px;
+  }
+  

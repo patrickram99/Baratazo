@@ -1,27 +1,19 @@
-import { useEffect, useState } from "react";
-import "./App.css";
-type Book = {
-  id: string;
-  title: string;
-};
-function App() {
-  const [books, setBooks] = useState<Book[]>([]);
-  useEffect(() => {
-    const getBooks = async () => {
-      const response = await fetch("http://localhost:4000/books");
-      const data = await response.json();
-      setBooks(data);
-    };
-    getBooks();
-  }, []);
+import React from "react";
+import Header from "./components/Header";
+import Navbar from "./components/Navbar";
+import Publicidad from "./components/Publicidad";
+import Productos from "./components/Productos";
+import "./App.css"; // Archivo CSS global
+
+const App: React.FC = () => {
   return (
-    <>
-      <ul>
-        {books.map((book) => (
-          <li key={book.id}>{book.title}</li>
-        ))}
-      </ul>
-    </>
+    <div className="app">
+      <Header />
+      <Navbar />
+      <Publicidad />
+      <Productos />
+    </div>
   );
-}
+};
+
 export default App;
