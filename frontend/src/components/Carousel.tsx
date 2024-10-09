@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./Carousel.css"; // Crear un archivo CSS para el carrusel
 
 interface Slide {
   img: string;
@@ -24,34 +23,35 @@ const Carousel: React.FC = () => {
   }, [slides.length]);
 
   return (
-    <div className="carousel">
+    <div className="relative max-w-full mx-auto my-5 px-5 overflow-hidden">
       {slides.map((slide, index) => (
         <div
           key={index}
-          className="carousel-slide"
-          style={{ display: index === currentIndex ? "block" : "none" }}
+          className={`relative w-full h-[300px] ${
+            index === currentIndex ? "block" : "hidden"
+          }`}
         >
-          <img src={slide.img} alt={slide.alt} />
+          <img
+            src={slide.img}
+            alt={slide.alt}
+            className="w-full h-full object-cover mx-auto"
+          />
         </div>
       ))}
-      <a
-        className="prev"
+      <button
+        className="absolute top-1/2 left-0 transform -translate-y-1/2 cursor-pointer px-4 py-2 text-white font-bold text-lg transition-all duration-600 rounded-r-md hover:bg-black hover:bg-opacity-80"
         onClick={() =>
           setCurrentIndex((currentIndex - 1 + slides.length) % slides.length)
         }
-        role="button"
-        tabIndex={0}
       >
         &#10094;
-      </a>
-      <a
-        className="next"
+      </button>
+      <button
+        className="absolute top-1/2 right-0 transform -translate-y-1/2 cursor-pointer px-4 py-2 text-white font-bold text-lg transition-all duration-600 rounded-l-md hover:bg-black hover:bg-opacity-80"
         onClick={() => setCurrentIndex((currentIndex + 1) % slides.length)}
-        role="button"
-        tabIndex={0}
       >
         &#10095;
-      </a>
+      </button>
     </div>
   );
 };

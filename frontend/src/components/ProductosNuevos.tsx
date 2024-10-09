@@ -1,5 +1,4 @@
 import React from "react";
-import "./ProductosNuevos.css";
 
 interface Producto {
   nombre: string;
@@ -79,19 +78,36 @@ const productos: Producto[] = [
 
 const ProductosNuevos: React.FC = () => {
   return (
-    <section className="productos-nuevos">
-      <h2>Nuevos Productos</h2>
-      <div className="productos">
-        {productos.map((producto, index) => (
-          <div key={index} className="product-card">
-            <a href="CarritoCompras.html">
-              <img src={producto.imagen} alt={producto.nombre} />
-            </a>
-            <h3>{producto.nombre}</h3>
-            <p>{producto.descripcion}</p>
-            <span>{producto.precio}</span>
-          </div>
-        ))}
+    <section className="bg-white py-8">
+      <h2 className="text-3xl font-bold mb-8 text-center">Nuevos Productos</h2>
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {productos.map((producto, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-lg shadow-md overflow-hidden"
+            >
+              <a href="CarritoCompras.html">
+                <img
+                  src={producto.imagen}
+                  alt={producto.nombre}
+                  className="w-full h-48 object-cover"
+                />
+              </a>
+              <div className="p-4">
+                <h3 className="text-xl font-semibold mb-2">
+                  {producto.nombre}
+                </h3>
+                <p className="text-gray-600 text-sm mb-4">
+                  {producto.descripcion}
+                </p>
+                <span className="text-lg font-bold text-blue-600">
+                  {producto.precio}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./ConfirmacionDatos.css";
 
 const ConfirmacionDatos: React.FC = () => {
   const [usarDatosCuenta, setUsarDatosCuenta] = useState(false);
@@ -9,21 +8,28 @@ const ConfirmacionDatos: React.FC = () => {
   };
 
   return (
-    <div>
-      <div className="confirmacion-datos-container">
-        <h1>Confirmación de datos</h1>
-        <div className="form-container">
-          <form>
-            {/* Fila de Correo Electrónico y Checkbox */}
-            <div className="input-group email-group">
-              <label htmlFor="email">Dirección de correo electrónico *</label>
-              <input type="email" id="email" required />
-              <div className="checkbox-group">
+    <div className="bg-gray-100 p-6">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-3xl font-bold mb-6">Confirmación de datos</h1>
+        <div className="flex flex-wrap -mx-4">
+          <form className="w-full lg:w-2/3 px-4 mb-8">
+            <div className="mb-6">
+              <label htmlFor="email" className="block mb-2 font-semibold">
+                Dirección de correo electrónico *
+              </label>
+              <input
+                type="email"
+                id="email"
+                required
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+              <div className="flex items-center mt-2">
                 <input
                   type="checkbox"
                   id="usar-datos-cuenta"
                   checked={usarDatosCuenta}
                   onChange={handleUsarDatosCuentaChange}
+                  className="mr-2"
                 />
                 <label htmlFor="usar-datos-cuenta">
                   Usar datos predefinidos de la cuenta?
@@ -31,104 +37,187 @@ const ConfirmacionDatos: React.FC = () => {
               </div>
             </div>
 
-            {/* Fila de Nombre y Apellido */}
-            <div className="input-group flex-row">
-              <div className="flex-item">
-                <label htmlFor="nombre">Nombre *</label>
-                <input type="text" id="nombre" required />
+            <div className="flex flex-wrap -mx-2 mb-6">
+              <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0">
+                <label htmlFor="nombre" className="block mb-2 font-semibold">
+                  Nombre *
+                </label>
+                <input
+                  type="text"
+                  id="nombre"
+                  required
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
               </div>
-              <div className="flex-item">
-                <label htmlFor="apellido">Apellido *</label>
-                <input type="text" id="apellido" required />
+              <div className="w-full md:w-1/2 px-2">
+                <label htmlFor="apellido" className="block mb-2 font-semibold">
+                  Apellido *
+                </label>
+                <input
+                  type="text"
+                  id="apellido"
+                  required
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
               </div>
             </div>
 
-            {/* Fila de Número de Teléfono */}
-            <div className="input-group">
-              <label htmlFor="telefono">Número de teléfono *</label>
-              <input type="tel" id="telefono" required />
+            <div className="mb-6">
+              <label htmlFor="telefono" className="block mb-2 font-semibold">
+                Número de teléfono *
+              </label>
+              <input
+                type="tel"
+                id="telefono"
+                required
+                className="w-full p-2 border border-gray-300 rounded"
+              />
             </div>
 
-            {/* Fila de País y Estado/Provincia */}
-            <div className="input-group flex-row">
-              <div className="flex-item">
-                <label htmlFor="pais">País *</label>
-                <select id="pais" required>
+            <div className="flex flex-wrap -mx-2 mb-6">
+              <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0">
+                <label htmlFor="pais" className="block mb-2 font-semibold">
+                  País *
+                </label>
+                <select
+                  id="pais"
+                  required
+                  className="w-full p-2 border border-gray-300 rounded"
+                >
                   <option value="peru">Perú</option>
                   <option value="argentina">Argentina</option>
                   <option value="chile">Chile</option>
-                  {/* Agrega más opciones según sea necesario */}
                 </select>
               </div>
-              <div className="flex-item">
-                <label htmlFor="estado">Estado/Provincia *</label>
-                <input type="text" id="estado" required />
+              <div className="w-full md:w-1/2 px-2">
+                <label htmlFor="estado" className="block mb-2 font-semibold">
+                  Estado/Provincia *
+                </label>
+                <input
+                  type="text"
+                  id="estado"
+                  required
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
               </div>
             </div>
 
-            {/* Fila de Dirección y Ciudad */}
-            <div className="input-group flex-row">
-              <div className="flex-item">
-                <label htmlFor="direccion">Dirección *</label>
-                <input type="text" id="direccion" required />
+            <div className="flex flex-wrap -mx-2 mb-6">
+              <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0">
+                <label htmlFor="direccion" className="block mb-2 font-semibold">
+                  Dirección *
+                </label>
+                <input
+                  type="text"
+                  id="direccion"
+                  required
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
               </div>
-              <div className="flex-item">
-                <label htmlFor="ciudad">Ciudad *</label>
-                <input type="text" id="ciudad" required />
+              <div className="w-full md:w-1/2 px-2">
+                <label htmlFor="ciudad" className="block mb-2 font-semibold">
+                  Ciudad *
+                </label>
+                <input
+                  type="text"
+                  id="ciudad"
+                  required
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
               </div>
             </div>
 
-            {/* Fila de Código Postal y Referencia */}
-            <div className="input-group flex-row">
-              <div className="flex-item">
-                <label htmlFor="codigo-postal">Código Postal *</label>
-                <input type="text" id="codigo-postal" required />
+            <div className="flex flex-wrap -mx-2 mb-6">
+              <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0">
+                <label
+                  htmlFor="codigo-postal"
+                  className="block mb-2 font-semibold"
+                >
+                  Código Postal *
+                </label>
+                <input
+                  type="text"
+                  id="codigo-postal"
+                  required
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
               </div>
-              <div className="flex-item">
-                <label htmlFor="referencia">Referencia</label>
-                <input type="text" id="referencia" />
+              <div className="w-full md:w-1/2 px-2">
+                <label
+                  htmlFor="referencia"
+                  className="block mb-2 font-semibold"
+                >
+                  Referencia
+                </label>
+                <input
+                  type="text"
+                  id="referencia"
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
               </div>
             </div>
 
-            <div className="buttons-container">
-              <button type="submit" className="btn">
+            <div className="mt-8">
+              <button
+                type="submit"
+                className="bg-blue-500 text-white px-4 py-2 rounded mr-4 hover:bg-blue-600"
+              >
                 Agregar método de pago
               </button>
-              <button type="button" className="btn btn-cancel">
+              <button
+                type="button"
+                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+              >
                 Cancelar
               </button>
             </div>
           </form>
 
-          <div className="resumen-pedido">
-            <h2>Resumen del pedido</h2>
-            <ul>
-              <li className="producto">
-                <img src="/img/auriculares1.jpg" alt="Producto 1" />
-                Producto 1 - S/ 340.00
-              </li>
-              <li className="producto">
-                <img src="/img/gabinete1.jpg" alt="Producto 2" />
-                Producto 2 - S/ 280.00
-              </li>
-            </ul>
-            <h3>Total del pedido: S/ 620.00</h3>
-            <div className="metodo-pago">
-              <p>Método de pago</p>
-              <input
-                type="radio"
-                id="tarjeta"
-                name="metodo-pago"
-                value="tarjeta"
-              />
-              <label htmlFor="tarjeta">Tarjeta débito/crédito</label>
-              <input
-                type="radio"
-                id="efectivo"
-                name="metodo-pago"
-                value="efectivo"
-              />
-              <label htmlFor="efectivo">Pago en efectivo</label>
+          <div className="w-full lg:w-1/3 px-4">
+            <div className="bg-white p-6 rounded shadow">
+              <h2 className="text-xl font-bold mb-4">Resumen del pedido</h2>
+              <ul className="mb-4">
+                <li className="flex items-center mb-2">
+                  <img
+                    src="/img/auriculares1.jpg"
+                    alt="Producto 1"
+                    className="w-12 h-12 object-cover mr-4"
+                  />
+                  <span>Producto 1 - S/ 340.00</span>
+                </li>
+                <li className="flex items-center mb-2">
+                  <img
+                    src="/img/gabinete1.jpg"
+                    alt="Producto 2"
+                    className="w-12 h-12 object-cover mr-4"
+                  />
+                  <span>Producto 2 - S/ 280.00</span>
+                </li>
+              </ul>
+              <h3 className="font-bold mb-4">Total del pedido: S/ 620.00</h3>
+              <div>
+                <p className="font-semibold mb-2">Método de pago</p>
+                <div className="flex items-center mb-2">
+                  <input
+                    type="radio"
+                    id="tarjeta"
+                    name="metodo-pago"
+                    value="tarjeta"
+                    className="mr-2"
+                  />
+                  <label htmlFor="tarjeta">Tarjeta débito/crédito</label>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="efectivo"
+                    name="metodo-pago"
+                    value="efectivo"
+                    className="mr-2"
+                  />
+                  <label htmlFor="efectivo">Pago en efectivo</label>
+                </div>
+              </div>
             </div>
           </div>
         </div>
