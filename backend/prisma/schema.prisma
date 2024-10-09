@@ -19,9 +19,10 @@ model Usuario {
   nombre      String                                   // Nombre del usuario
   apellido    String                                   // Apellido del usuario
   email       String   @unique                        // Correo electrónico único
-  password  String                                   // Contraseña del usuario
+  password    String                                   // Contraseña del usuario
   direccion   String?                                  // Dirección del usuario (opcional)
   createdAt   DateTime @default(now())                // Fecha de creación
+  ventas      Venta[]  @relation("UsuarioVentas")
 }
 
 // Modelo para Productos
@@ -33,6 +34,7 @@ model Producto {
   precio            Float                                    // Precio del producto
   categoria         String                                   // Categoría del producto
   createdAt        DateTime @default(now())                // Fecha de creación
+  ventas           Venta[]  @relation("ProductoVentas")
 }
 
 // Modelo para Promociones
@@ -44,4 +46,29 @@ model Promocion {
   descripcion      String                                   // Descripción de la promoción
   condiciones      Bytes                                     // Condiciones en formato BLOB
   createdAt        DateTime @default(now())                // Fecha de creación
+}
+
+// Modelo para Ventas
+model Venta {
+  id         Int       @id @default(autoincrement())
+  usuarioId  Int                                       
+  productoId Int                                       
+  cantidad   Int                                       
+  total      Float                                      
+  fecha      DateTime  @default(now())                 
+  boleta     Boleta?   @relation("VentaBoleta")        
+
+  usuario    Usuario   @relation("UsuarioVentas", fields: [usuarioId], references: [id])
+  producto   Producto   @relation("ProductoVentas", fields: [productoId], references: [id])
+}
+
+// Modelo para Boletas
+model Boleta {
+  id       Int      @id @default(autoincrement())
+  ventaId  Int     @unique                       
+  numero   String                                 
+  fecha    DateTime @default(now())              
+  total    Float                                 
+
+  venta    Venta     @relation("VentaBoleta", fields: [ventaId], references: [id]) 
 }
