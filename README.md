@@ -36,6 +36,34 @@ npm install -w backend
 npm install -w frontend
 ```
 
+## Configurar base de datos
+
+1. Instalar PostgreSQL.
+
+2. Crear una base de datos vacía llamada "baratazo_db".
+
+3. Crear archivo .env en folder backend, debería verse asi:
+
+```
+.
+├── backend/
+│   └── .env
+│   └── .gitignore
+│   └── package.json
+│   └── otros archivos...
+├── frontend/
+│   ├── src/
+│   └── package.json
+├── package.json
+└── README.md
+```
+3. Definir la URL de conexión a PostgreSQL con usuario y contraseña del programa dentro del archivo .env:
+
+```
+DATABASE_URL="postgresql://usuario:contraseña@localhost:5432/baratazo?schema=public"
+```
+
+
 ## Ejecutar el proyecto
 
 Para ejecutar tanto el backend como el frontend simultáneamente, usa el siguiente comando en la raíz del proyecto:
