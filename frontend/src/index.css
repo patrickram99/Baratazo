@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html, body {
   height: 100%; /* Asegura que el body ocupe toda la altura de la ventana */
   margin: 0; /* Elimina el margen por defecto */

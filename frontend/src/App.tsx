@@ -11,24 +11,48 @@ import "./App.css"; // Estilos globales para la app
 const App: React.FC = () => {
   return (
     <Router>
-      <div className="App">
+      <div className="flex flex-col min-h-screen bg-gray-100">
         <Header />
         <Navbar />
-        {/* Define las rutas y muestra el Carousel solo en la ruta principal */}
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <Carousel />
-                <ProductosNuevos />
-              </>
-            }
-          />
-          <Route path="/carrito" element={<CarritoCompras />} />
-          <Route path="/confirmacion" element={<ConfirmacionDatosPage />} />
-          {/* Agregar más rutas según sea necesario */}
-        </Routes>
+        <main className="flex-grow container mx-auto px-4 py-8">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <div className="space-y-8">
+                  <section className="bg-white rounded-lg shadow-md overflow-hidden">
+                    <Carousel />
+                  </section>
+                  <section className="bg-white rounded-lg shadow-md p-6">
+                    <h2 className="text-2xl font-bold mb-4">
+                      Productos Nuevos
+                    </h2>
+                    <ProductosNuevos />
+                  </section>
+                </div>
+              }
+            />
+            <Route
+              path="/carrito"
+              element={
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <CarritoCompras />
+                </div>
+              }
+            />
+            <Route
+              path="/confirmacion"
+              element={
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <ConfirmacionDatosPage />
+                </div>
+              }
+            />
+          </Routes>
+        </main>
+        <footer className="bg-gray-800 text-white py-4 text-center">
+          <p>&copy; 2024 Tu Tienda. Todos los derechos reservados.</p>
+        </footer>
       </div>
     </Router>
   );

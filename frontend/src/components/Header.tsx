@@ -1,20 +1,19 @@
 import React from "react";
-import "./Header.css"; // Crear un archivo de CSS para Header si lo prefieres
 
 const Header: React.FC = () => {
   return (
-    <header>
-      <div className="info-header">
-        <div className="izquierda">Lun - Sáb: 9:00 AM - 8:45 PM</div>
-        <div className="centro">
+    <header className="bg-gray-800">
+      <div className="bg-gray-700 text-white flex justify-between items-center px-5 py-2">
+        <div className="flex-1 text-left">Lun - Sáb: 9:00 AM - 8:45 PM</div>
+        <div className="flex-1 text-center">
           Visite nuestra tienda en: 529 C. Juan Manuel Polar
         </div>
-        <div className="derecha">
+        <div className="flex-1 text-right">
           Contáctanos: (+51) 926 770 008
-          <a href="#">
+          <a href="#" className="ml-2">
             <i className="fab fa-instagram"></i>
           </a>
-          <a href="#">
+          <a href="#" className="ml-2">
             <i className="fab fa-facebook"></i>
           </a>
         </div>
