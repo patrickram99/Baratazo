@@ -1,0 +1,47 @@
+.carousel {
+    position: relative;
+    max-width: 100%;  /* Limita el ancho máximo del carrusel */
+    margin: 20px auto;  /* Margen superior e inferior */
+    padding: 0 20px; /* Espacio a los lados */
+    overflow: hidden;  /* Esconde las partes que sobresalgan */
+}
+
+.carousel-slide {
+    display: none; /* Cambiado a none para que no se muestre inicialmente */
+    position: relative;
+    width: 100%; /* Asegúrate de que ocupe el ancho total del contenedor */
+    height: 300px; /* Establece una altura fija para el slide */
+}
+
+.carousel-slide img {
+    width: 100%; /* Asegúrate de que la imagen ocupe todo el ancho del contenedor */
+    height: 100%; /* Asegúrate de que la imagen ocupe toda la altura del contenedor */
+    object-fit: cover; /* Cubre el espacio sin distorsionar la imagen */
+    margin: 0 auto; /* Centra la imagen dentro del slide */
+}
+
+.prev,
+.next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+}
+
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.prev:hover,
+.next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
