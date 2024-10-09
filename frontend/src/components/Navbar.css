@@ -1,45 +1,58 @@
-/* Estilos para la barra de navegación */
 .navbar {
-    background-color: #007BFF; /* Fondo azul */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-  }
-  
-  /* Estilos para la caja de búsqueda */
-  .navbar-search input {
-    width: 200px;
-    padding: 8px;
-    border: none;
-    border-radius: 4px;
-    outline: none;
-    background-color: #ffffff; /* Fondo blanco */
-    color: #333; /* Texto en gris oscuro */
-  }
-  
-  /* Estilos para los botones */
-  .btn {
-    background: none;
-    border: none;
-    color: #ffffff; /* Color de texto blanco para contrastar */
-    font-size: 16px;
-    cursor: pointer;
-    margin-left: 10px;
-  }
-  
-  .btn i {
-    font-size: 20px;
-    margin-right: 5px;
-  }
-  
-  /* Cambia el color de los íconos al pasar el mouse */
-  .btn:hover i {
-    color: #cccccc; /* Color gris claro en hover */
-  }
-  
-  /* Estilo para botones de sesión y carrito de compras */
-  .btn .fas {
-    font-size: 18px;
-  }
-  
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: white;
+}
+
+.logo img {
+  height: 50px;
+}
+
+.nav-links {
+  display: flex; /* Mostrar en fila */
+  list-style: none; /* Elimina el estilo de lista */
+  padding: 0; /* Sin padding */
+  margin: 0; /* Sin margen */
+}
+
+.nav-links li {
+  margin: 0 15px; /* Espaciado entre elementos */
+}
+
+.nav-links a {
+  text-decoration: none; /* Elimina subrayado */
+  color: #000; /* Color negro del texto */
+  font-weight: bold; /* Texto en negrita */
+  font-size: 16px; /* Tamaño de fuente */
+  transition: color 0.3s; /* Transición suave para el color */
+}
+
+.nav-links a:hover {
+  color: black; /* Cambia a azul al pasar el ratón */
+}
+
+.user-options {
+  display: flex;
+  align-items: center;
+}
+
+.user-options .btn {
+  background-color: transparent; /* Fondo transparente */
+  border: 2px solid transparent; /* Sin borde visible */
+  border-radius: 20px; /* Bordes redondeados */
+  color: black; /* Color del texto */
+  padding: 10px 20px; /* Espaciado interno */
+  cursor: pointer; /* Cambia el cursor */
+  margin: 0 5px; /* Espaciado entre botones */
+  font-size: 16px; /* Tamaño de fuente */
+}
+
+.user-options .btn:hover {
+  border-color: black; /* Borde azul al pasar el ratón */
+}
+.nav-links a {
+  color: #000 !important; /* Forzar color negro */
+}
+

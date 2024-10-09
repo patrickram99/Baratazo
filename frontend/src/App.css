@@ -1,8 +1,10 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.App {
+  flex: 1; /* Permite que el contenedor App ocupe todo el espacio disponible */
+  display: flex;
+  flex-direction: column; /* Permite que los hijos se apilen verticalmente */
+  min-height: 100vh; /* Asegura que el contenedor ocupe al menos la altura de la ventana */
+  padding: 0; /* Elimina el padding */
+  margin: 0; /* Elimina el margen */
 }
 
 .logo {
@@ -11,11 +13,9 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
 @keyframes logo-spin {
@@ -24,12 +24,6 @@
   }
   to {
     transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
   }
 }
 
