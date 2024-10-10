@@ -31,7 +31,7 @@ module.exports = {
   ],
   parserPreset: {
     parserOpts: {
-      headerPattern: /^TG-(\d+) #(ready-for-test|done) (\w+): (.+)$/,
+      headerPattern: /^TG-(\d+) #(ready-for-test|done|in-progress|closed) (\w+): (.+)$/,
       headerCorrespondence: ['ticket', 'status', 'type', 'subject']
     }
   }
