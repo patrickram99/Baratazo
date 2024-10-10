@@ -57,12 +57,12 @@ npm install -w frontend
 ├── package.json
 └── README.md
 ```
+
 3. Definir la URL de conexión a PostgreSQL con usuario y contraseña del programa dentro del archivo .env:
 
 ```
 DATABASE_URL="postgresql://usuario:contraseña@localhost:5432/baratazo?schema=public"
 ```
-
 
 ## Ejecutar el proyecto
 
@@ -77,16 +77,19 @@ Esto iniciará el backend en `http://localhost:4000` y el frontend en `http://lo
 ## Comandos útiles
 
 - Ejecutar solo el backend:
+
   ```bash
   npm run backend
   ```
 
 - Ejecutar solo el frontend:
+
   ```bash
   npm run frontend
   ```
 
 - Ejecutar linter en todo el proyecto:
+
   ```bash
   npm run lint
   ```
@@ -101,11 +104,13 @@ Esto iniciará el backend en `http://localhost:4000` y el frontend en `http://lo
 Para instalar nuevos paquetes en un workspace específico, usa el flag `-w`:
 
 - Para el backend:
+
   ```bash
   npm install nombre-del-paquete -w backend
   ```
 
 - Para el frontend:
+
   ```bash
   npm install nombre-del-paquete -w frontend
   ```

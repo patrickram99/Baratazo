@@ -1,32 +1,30 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Header from "./components/Header";
-import Navbar from "./components/Navbar";
-import Carousel from "./components/Carousel";
-import ProductosNuevos from "./components/ProductosNuevos";
-import CarritoCompras from "./components/CarritoCompras";
-import ConfirmacionDatosPage from "./components/ConfirmacionDatos";
-import "./App.css"; // Estilos globales para la app
+import React from 'react'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import Header from './components/Header'
+import Navbar from './components/Navbar'
+import Carousel from './components/Carousel'
+import ProductosNuevos from './components/ProductosNuevos'
+import CarritoCompras from './components/CarritoCompras'
+import ConfirmacionDatosPage from './components/ConfirmacionDatos'
+import './App.css' // Estilos globales para la app
 
 const App: React.FC = () => {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen bg-gray-100">
+      <div className="flex min-h-screen flex-col bg-gray-100">
         <Header />
         <Navbar />
-        <main className="flex-grow container mx-auto px-4 py-8">
+        <main className="container mx-auto flex-grow px-4 py-8">
           <Routes>
             <Route
               path="/"
               element={
                 <div className="space-y-8">
-                  <section className="bg-white rounded-lg shadow-md overflow-hidden">
+                  <section className="overflow-hidden rounded-lg bg-white shadow-md">
                     <Carousel />
                   </section>
-                  <section className="bg-white rounded-lg shadow-md p-6">
-                    <h2 className="text-2xl font-bold mb-4">
-                      Productos Nuevos
-                    </h2>
+                  <section className="rounded-lg bg-white p-6 shadow-md">
+                    <h2 className="mb-4 text-2xl font-bold">Productos Nuevos</h2>
                     <ProductosNuevos />
                   </section>
                 </div>
@@ -35,7 +33,7 @@ const App: React.FC = () => {
             <Route
               path="/carrito"
               element={
-                <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="rounded-lg bg-white p-6 shadow-md">
                   <CarritoCompras />
                 </div>
               }
@@ -43,19 +41,19 @@ const App: React.FC = () => {
             <Route
               path="/confirmacion"
               element={
-                <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="rounded-lg bg-white p-6 shadow-md">
                   <ConfirmacionDatosPage />
                 </div>
               }
             />
           </Routes>
         </main>
-        <footer className="bg-gray-800 text-white py-4 text-center">
+        <footer className="bg-gray-800 py-4 text-center text-white">
           <p>&copy; 2024 Tu Tienda. Todos los derechos reservados.</p>
         </footer>
       </div>
     </Router>
-  );
-};
+  )
+}
 
-export default App;
+export default App

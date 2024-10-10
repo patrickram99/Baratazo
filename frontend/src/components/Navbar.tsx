@@ -1,60 +1,60 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const Navbar: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+    setIsMenuOpen(!isMenuOpen)
+  }
 
   return (
     <nav className="bg-white shadow-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 justify-between">
           <div className="flex items-center">
             <img src="/img/logo.png" alt="Logo" className="h-8 w-auto" />
           </div>
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden items-center space-x-4 md:flex">
             {[
-              "Laptops",
-              "Desktop PCs",
-              "Componentes",
-              "Periféricos",
-              "Subasta",
-              "Promociones",
-              "Reportes",
-            ].map((item) => (
+              'Laptops',
+              'Desktop PCs',
+              'Componentes',
+              'Periféricos',
+              'Subasta',
+              'Promociones',
+              'Reportes',
+            ].map(item => (
               <Link
                 key={item}
                 to="#"
-                className="text-black hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium"
+                className="rounded-md px-3 py-2 text-sm font-medium text-black hover:text-gray-700"
               >
                 {item}
               </Link>
             ))}
           </div>
-          <div className="hidden md:flex items-center space-x-4">
-            <button className="bg-transparent hover:bg-gray-100 text-black font-semibold py-2 px-4 border border-black rounded transition duration-300">
+          <div className="hidden items-center space-x-4 md:flex">
+            <button className="rounded border border-black bg-transparent px-4 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100">
               Iniciar Sesión
             </button>
-            <button className="bg-transparent hover:bg-gray-100 text-black font-semibold py-2 px-4 border border-black rounded transition duration-300">
+            <button className="rounded border border-black bg-transparent px-4 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100">
               Registrarse
             </button>
-            <button className="text-black hover:text-gray-700 p-2">
+            <button className="p-2 text-black hover:text-gray-700">
               <i className="fas fa-search"></i>
             </button>
-            <Link to="/carrito" className="text-black hover:text-gray-700 p-2">
+            <Link to="/carrito" className="p-2 text-black hover:text-gray-700">
               <i className="fas fa-shopping-cart"></i>
             </Link>
-            <button className="text-black hover:text-gray-700 p-2">
+            <button className="p-2 text-black hover:text-gray-700">
               <i className="fas fa-user"></i>
             </button>
           </div>
           <div className="-mr-2 flex md:hidden">
             <button
               onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-black hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              className="inline-flex items-center justify-center rounded-md p-2 text-black hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
             >
               <span className="sr-only">Open main menu</span>
               {!isMenuOpen ? (
@@ -97,47 +97,47 @@ const Navbar: React.FC = () => {
 
       {isMenuOpen && (
         <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
             {[
-              "Laptops",
-              "Desktop PCs",
-              "Componentes",
-              "Periféricos",
-              "Subasta",
-              "Promociones",
-              "Reportes",
-            ].map((item) => (
+              'Laptops',
+              'Desktop PCs',
+              'Componentes',
+              'Periféricos',
+              'Subasta',
+              'Promociones',
+              'Reportes',
+            ].map(item => (
               <Link
                 key={item}
                 to="#"
-                className="text-black hover:bg-gray-100 block px-3 py-2 rounded-md text-base font-medium"
+                className="block rounded-md px-3 py-2 text-base font-medium text-black hover:bg-gray-100"
               >
                 {item}
               </Link>
             ))}
           </div>
-          <div className="pt-4 pb-3 border-t border-gray-200">
+          <div className="border-t border-gray-200 pb-3 pt-4">
             <div className="flex items-center px-5">
-              <button className="bg-transparent hover:bg-gray-100 text-black font-semibold py-2 px-4 border border-black rounded w-full mb-2 transition duration-300">
+              <button className="mb-2 w-full rounded border border-black bg-transparent px-4 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100">
                 Iniciar Sesión
               </button>
             </div>
             <div className="flex items-center px-5">
-              <button className="bg-transparent hover:bg-gray-100 text-black font-semibold py-2 px-4 border border-black rounded w-full mb-2 transition duration-300">
+              <button className="mb-2 w-full rounded border border-black bg-transparent px-4 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100">
                 Registrarse
               </button>
             </div>
-            <div className="mt-3 px-2 space-y-1">
-              <button className="block px-3 py-2 rounded-md text-base font-medium text-black hover:text-gray-700 hover:bg-gray-100 w-full text-left">
+            <div className="mt-3 space-y-1 px-2">
+              <button className="block w-full rounded-md px-3 py-2 text-left text-base font-medium text-black hover:bg-gray-100 hover:text-gray-700">
                 <i className="fas fa-search mr-2"></i> Buscar
               </button>
               <Link
                 to="/carrito"
-                className="block px-3 py-2 rounded-md text-base font-medium text-black hover:text-gray-700 hover:bg-gray-100 w-full text-left"
+                className="block w-full rounded-md px-3 py-2 text-left text-base font-medium text-black hover:bg-gray-100 hover:text-gray-700"
               >
                 <i className="fas fa-shopping-cart mr-2"></i> Carrito
               </Link>
-              <button className="block px-3 py-2 rounded-md text-base font-medium text-black hover:text-gray-700 hover:bg-gray-100 w-full text-left">
+              <button className="block w-full rounded-md px-3 py-2 text-left text-base font-medium text-black hover:bg-gray-100 hover:text-gray-700">
                 <i className="fas fa-user mr-2"></i> Perfil
               </button>
             </div>
@@ -145,7 +145,7 @@ const Navbar: React.FC = () => {
         </div>
       )}
     </nav>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

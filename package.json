@@ -13,7 +13,11 @@
     "lint": "npm run lint:backend && npm run lint:frontend",
     "format:backend": "prettier --write \"backend/**/*.{js,ts,json,md}\"",
     "format:frontend": "prettier --write \"frontend/**/*.{js,jsx,ts,tsx,json,md}\"",
-    "format": "npm run format:backend && npm run format:frontend"
+    "format": "npm run format:backend && npm run format:frontend",
+    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "prettier:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "prettier:backend": "prettier --write \"backend/**/*.{js,ts,json,md}\"",
+    "prettier:frontend": "prettier --write \"frontend/**/*.{js,jsx,ts,tsx,json,md}\""
   },
   "author": "",
   "license": "ISC",
