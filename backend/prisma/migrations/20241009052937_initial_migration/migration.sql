@@ -21,7 +21,7 @@ CREATE TABLE "Producto" (
     "categoria" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "Producto_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Producto_pkey" PRYMARY KEY ("id")
 );
 
 -- CreateTable

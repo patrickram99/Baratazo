@@ -11,6 +11,7 @@
     "lint:backend": "eslint --ext .js,.ts backend",
     "lint:frontend": "eslint --ext .js,.jsx,.ts,.tsx frontend",
     "lint": "npm run lint:backend && npm run lint:frontend",
+    "lint-staged": "lint-staged",
     "format:backend": "prettier --write \"backend/**/*.{js,ts,json,md}\"",
     "format:frontend": "prettier --write \"frontend/**/*.{js,jsx,ts,tsx,json,md}\"",
     "format": "npm run format:backend && npm run format:frontend"
