@@ -2,8 +2,8 @@ import React from "react";
 
 const Header: React.FC = () => {
   return (
-    <header className="bg-gray-800">
-      <div className="bg-gray-700 text-white flex flex-col sm:flex-row justify-between items-center px-4 py-2 text-sm sm:text-base">
+    <header className="bg-plomo">
+      <div className="text-white flex flex-col sm:flex-row justify-between items-center px-4 py-2 text-sm sm:text-base">
         <div className="w-full sm:flex-1 text-center sm:text-left mb-2 sm:mb-0">
           Lun - Sáb: 9:00 AM - 8:45 PM
         </div>
