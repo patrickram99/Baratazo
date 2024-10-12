@@ -8,22 +8,29 @@ const ConfirmacionDatos: React.FC = () => {
   }
 
   return (
-    <div className="bg-gray-100 p-6">
+    <div className="bg-white p-6">
       <div className="mx-auto max-w-6xl">
+        <div className="mb-1">
+          {' '}
+          {/* Tamaño de texto reducido */}
+          <h2 className="text-xs">Home &gt; Carrito &gt; Confirmación</h2>
+        </div>
+
         <h1 className="mb-6 text-3xl font-bold">Confirmación de datos</h1>
         <div className="-mx-4 flex flex-wrap">
           <form className="mb-8 w-full px-4 lg:w-2/3">
-            <div className="mb-6">
-              <label htmlFor="email" className="mb-2 block font-semibold">
-                Dirección de correo electrónico *
-              </label>
+            {/* El resto del código del formulario permanece igual */}
+            <label htmlFor="email" className="mb-2 block font-semibold">
+              Dirección de correo electrónico *
+            </label>
+            <div className="flex items-center">
               <input
                 type="email"
                 id="email"
                 required
-                className="w-full rounded border border-gray-300 p-2"
+                className="w-1/2 rounded border border-gray-300 p-2"
               />
-              <div className="mt-2 flex items-center">
+              <div className="ml-4 mt-0 flex items-center">
                 <input
                   type="checkbox"
                   id="usar-datos-cuenta"
@@ -31,7 +38,9 @@ const ConfirmacionDatos: React.FC = () => {
                   onChange={handleUsarDatosCuentaChange}
                   className="mr-2"
                 />
-                <label htmlFor="usar-datos-cuenta">Usar datos predefinidos de la cuenta?</label>
+                <label htmlFor="usar-datos-cuenta" className="font-semibold">
+                  Usar datos predefinidos de la cuenta?
+                </label>
               </div>
             </div>
 
@@ -68,7 +77,7 @@ const ConfirmacionDatos: React.FC = () => {
                 type="tel"
                 id="telefono"
                 required
-                className="w-full rounded border border-gray-300 p-2"
+                className="w-1/2 rounded border border-gray-300 p-2"
               />
             </div>
 
@@ -145,16 +154,16 @@ const ConfirmacionDatos: React.FC = () => {
               </div>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 flex">
               <button
                 type="submit"
-                className="mr-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+                className="mr-4 rounded-full bg-[#1A6DAF] px-6 py-2 text-white transition duration-300 hover:bg-blue-600"
               >
                 Agregar método de pago
               </button>
               <button
                 type="button"
-                className="rounded bg-gray-500 px-4 py-2 text-white hover:bg-gray-600"
+                className="rounded-full bg-[#FDCD11] px-6 py-2 text-white transition duration-300 hover:bg-yellow-400"
               >
                 Cancelar
               </button>
@@ -207,6 +216,39 @@ const ConfirmacionDatos: React.FC = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Sección agregada para Soporte de Producto, Cuenta Personal y Ahorros Increíbles */}
+        <div className="mt-8 flex justify-center space-x-12">
+          {' '}
+          {/* Espacio horizontal reducido */}
+          <div className="flex flex-col items-center">
+            <h3 className="text-lg font-semibold">Soporte de Producto</h3>
+            <img
+              src="/path/to/circular-image1.jpg"
+              alt="Imagen circular"
+              className="h-12 w-12 rounded-full"
+            />
+            <p>Información sobre soporte.</p>
+          </div>
+          <div className="flex flex-col items-center">
+            <h3 className="text-lg font-semibold">Cuenta Personal</h3>
+            <img
+              src="/path/to/circular-image2.jpg"
+              alt="Imagen circular"
+              className="h-12 w-12 rounded-full"
+            />
+            <p>Gestión de tu cuenta.</p>
+          </div>
+          <div className="flex flex-col items-center">
+            <h3 className="text-lg font-semibold">Ahorros Increíbles</h3>
+            <img
+              src="/path/to/circular-image3.jpg"
+              alt="Imagen circular"
+              className="h-12 w-12 rounded-full"
+            />
+            <p>Aprovecha los mejores descuentos.</p>
           </div>
         </div>
       </div>

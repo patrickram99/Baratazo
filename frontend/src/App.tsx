@@ -1,19 +1,18 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import Header from './components/Header'
-import Navbar from './components/Navbar'
+import MainNavigation from './components/MainNavigation'
 import Carousel from './components/Carousel'
 import ProductosNuevos from './components/ProductosNuevos'
 import CarritoCompras from './components/CarritoCompras'
-import ConfirmacionDatosPage from './components/ConfirmacionDatos'
+import ConfirmacionDatos from './components/ConfirmacionDatos'
+import Footer from './components/Footer' // Importa el nuevo componente Footer
 import './App.css' // Estilos globales para la app
 
 const App: React.FC = () => {
   return (
     <Router>
       <div className="flex min-h-screen flex-col bg-gray-100">
-        <Header />
-        <Navbar />
+        <MainNavigation />
         <main className="container mx-auto flex-grow px-4 py-8">
           <Routes>
             <Route
@@ -42,15 +41,14 @@ const App: React.FC = () => {
               path="/confirmacion"
               element={
                 <div className="rounded-lg bg-white p-6 shadow-md">
-                  <ConfirmacionDatosPage />
+                  <ConfirmacionDatos />
                 </div>
               }
             />
           </Routes>
         </main>
-        <footer className="bg-gray-800 py-4 text-center text-white">
-          <p>&copy; 2024 Tu Tienda. Todos los derechos reservados.</p>
-        </footer>
+        {/* Inserta el nuevo Footer aquí */}
+        <Footer />
       </div>
     </Router>
   )
