@@ -1,11 +1,20 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const MainNavigation: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const navigate = useNavigate() // Asegúrate de que `navigate` esté inicializado correctamente.
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
+  }
+
+  const WishList = () => {
+    navigate('/') // Cambia Navigate por navigate
+  }
+
+  const CerrarSesion = () => {
+    navigate('/') // Cambia Navigate por navigate
   }
 
   return (
@@ -20,8 +29,8 @@ const MainNavigation: React.FC = () => {
             Visite nuestra tienda en: 529 C. Juan Manuel Polar
           </div>
           <div className="w-full text-center sm:flex-1 sm:text-right">
-            <div className="mb-2 sm:mb-0">Contáctanos: (+51) 926 770 008</div>
-            <div>
+            <div className="mb-2 flex items-center justify-end sm:mb-0">
+              <span>Contáctanos: (+51) 926 770 008</span>
               <a href="#" className="ml-2 inline-block">
                 <i className="fab fa-instagram"></i>
               </a>
@@ -60,11 +69,20 @@ const MainNavigation: React.FC = () => {
               ))}
             </div>
             <div className="hidden items-center space-x-4 md:flex">
-              <button className="rounded border border-black bg-transparent px-4 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100">
-                Iniciar Sesión
+              <button
+                onClick={WishList}
+                className="mb-2 rounded-full border border-[#1A6DAF] bg-transparent px-6 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100"
+                style={{ color: '#1A6DAF' }}
+              >
+                WishList
               </button>
-              <button className="rounded border border-black bg-transparent px-4 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100">
-                Registrarse
+
+              <button
+                onClick={CerrarSesion}
+                className="mb-2 rounded-full border border-[#FDCD11] bg-transparent px-6 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100"
+                style={{ color: '#FDCD11' }}
+              >
+                CerrarSesion
               </button>
               <button className="p-2 text-black hover:text-gray-700">
                 <i className="fas fa-search"></i>
