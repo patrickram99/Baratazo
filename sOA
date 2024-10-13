@@ -1,0 +1,269 @@
+[33mcommit 62edfa9c7413bbe23338c414c3cd7f75c31cfc58[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mavance2[m[33m, [m[1;31morigin/avance2[m[33m, [m[1;31morigin/avance1[m[33m, [m[1;32mavance1[m[33m)[m
+Author: Alessandro <dalvarezc@ulasalle.edu.pe>
+Date:   Fri Oct 11 20:57:22 2024 -0500
+
+    TG-134 #in-progress chore: se mejoro la interfaz de carrito y confirmacion de datos
+
+[33mcommit 3226049251560775b1c905b755cb7ca7f7270a9f[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m, [m[1;32mAvance[m[33m)[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Wed Oct 9 23:43:38 2024 -0500
+
+    TG-34 #closed feat: añadir prettier para frontend con tailwind
+
+[33mcommit a8dd0d881da27269c9fa2f479d94a86e580d3c15[m
+Merge: 0bcf2f9 82d3f6f
+Author: Patrick Andres Ramirez Santos <pramirezs@ulasalle.edu.pe>
+Date:   Wed Oct 9 21:45:23 2024 -0500
+
+    Merge pull request #8 from patrickram99/tailwind
+    
+    TG-123 #closed Campos de database
+
+[33mcommit 82d3f6f33234566b103a604e64cad44c45a6b086[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Wed Oct 9 21:44:25 2024 -0500
+
+    TG-123 #closed feat: añadir campo de base de datos para imagenes
+
+[33mcommit 15204cc8fdbea1cd2ccd240df1598e81debda193[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Wed Oct 9 21:11:58 2024 -0500
+
+    TG-122 #done chore: añadir paleta de colores y ejemplo en Header
+
+[33mcommit 0bcf2f94944ab420ef7b8566cf58daddd2359afa[m
+Merge: 46010b7 1a15e76
+Author: Patrick Andres Ramirez Santos <pramirezs@ulasalle.edu.pe>
+Date:   Wed Oct 9 18:21:18 2024 -0500
+
+    Merge pull request #7 from patrickram99/tailwind
+    
+    Tailwind
+
+[33mcommit 1a15e7658a35834c9ef3155b661a5ad41e354aa9[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Wed Oct 9 18:20:49 2024 -0500
+
+    TG-34 #done chore: añadir campos a database
+
+[33mcommit 5fc19be38aae7510b608601fb3a593c77c8ad886[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Wed Oct 9 17:44:43 2024 -0500
+
+    TG-118 #in-progress refactor: full rewrite of the components in tailwind
+
+[33mcommit 69052a78dcfebe9d81e0d046ea49b06c1cacdd13[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Wed Oct 9 17:14:15 2024 -0500
+
+    TG-34 #done test: probar tailwind y remover fondo negro de botones
+
+[33mcommit 5be850a20f56e1a32308ea04f06dfd9cc2890f5f[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Wed Oct 9 17:11:55 2024 -0500
+
+    TG-34 #done test: probar tailwind
+
+[33mcommit f909bef3edf9f1361d7d9ca69d86af14838a8a9b[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Wed Oct 9 17:01:37 2024 -0500
+
+    TG-34 #done test: probar tailwind
+
+[33mcommit 46010b75c95261e757ae4071dafd617472c6b938[m
+Merge: a9ae71b a8a39de
+Author: Patrick Andres Ramirez Santos <pramirezs@ulasalle.edu.pe>
+Date:   Wed Oct 9 14:25:17 2024 -0500
+
+    Merge pull request #6 from patrickram99/web
+    
+    Añadir carrito web
+
+[33mcommit a8a39de4fdc09aea493cf90dc9b68906f8855cf5[m
+Author: Alessandro-22 <dalvarezc@ulasalle.edu.pe>
+Date:   Wed Oct 9 21:13:33 2024 +0200
+
+    TG-117 #done refactor: interfaz web de compra:carritocompra,confirmacionpagos
+
+[33mcommit a9ae71b8e20814c0f3597cec4010f0b50f9aed24[m
+Author: Patrick Andres Ramirez Santos <pramirezs@ulasalle.edu.pe>
+Date:   Wed Oct 9 08:26:48 2024 -0500
+
+    Añadir configuración de db en README
+
+[33mcommit 75d24b1247057b6e52df2f55ada87639fdbf0178[m
+Merge: 0f79ff6 fd25b61
+Author: Patrick Andres Ramirez Santos <pramirezs@ulasalle.edu.pe>
+Date:   Wed Oct 9 08:05:09 2024 -0500
+
+    Merge pull request #5 from patrickram99/PrismaModels
+    
+    TG-48 #done chore: configuracion y conexion a db usando prisma
+
+[33mcommit fd25b61d2dc44f698642773883c3e65f2be391f4[m
+Author: Laeros <rancorit@ulasalle.edu.pe>
+Date:   Wed Oct 9 00:35:30 2024 -0500
+
+    TG-121 #ready-for-test feat: Añadir migración inicial de base de datos
+
+[33mcommit f1d83b96579ff155e14e7346d7662fa2c681d82f[m
+Author: Laeros <rancorit@ulasalle.edu.pe>
+Date:   Tue Oct 8 21:03:58 2024 -0500
+
+    TG-51 #ready-for-test feat: Actualizar Tablas y entidades en schema
+
+[33mcommit 9b703ceae3509d6b5543a8c16330a83865ec48ff[m
+Author: Laeros <rancorit@ulasalle.edu.pe>
+Date:   Tue Oct 8 18:45:13 2024 -0500
+
+    #TG-50 #ready-for-test feat: Definir schema con URL default de Postgres and TG-51 #ready-for-test feat: Crear tablas y entidades en schema
+
+[33mcommit 76373e78e6045f89113a32824b1e4aa5aed36f43[m
+Author: Laeros <rancorit@ulasalle.edu.pe>
+Date:   Tue Oct 8 18:42:56 2024 -0500
+
+    #TG-49 #ready-for-test feat: Instalar y configurar Prism
+
+[33mcommit 0f79ff64a408e10aa9e1800667d84b580e6c9d12[m
+Merge: e5cd2ba ac11f14
+Author: Patrick Andres Ramirez Santos <pramirezs@ulasalle.edu.pe>
+Date:   Tue Oct 8 15:11:07 2024 -0500
+
+    Merge pull request #4 from patrickram99/movil
+    
+    TG-119 #done feat: Infertaz de inicio Moviles para landing page
+
+[33mcommit ac11f143630baed8d8531f2b7db999e25f05dac6[m
+Author: kennymen <kfloresc@ulasalle.edu.pe>
+Date:   Tue Oct 8 15:08:01 2024 -0500
+
+    TG-119 #done feat: Infertaz de inicio Moviles para landing page
+
+[33mcommit e5cd2ba92e0cb06c75d884f70db00093b39dddf8[m
+Merge: 1524d38 7ca1035
+Author: Patrick Andres Ramirez Santos <pramirezs@ulasalle.edu.pe>
+Date:   Mon Oct 7 23:01:10 2024 -0500
+
+    Merge pull request #3 from patrickram99/cors-elimination
+    
+    Cors elimination and final linter compilation for backend
+
+[33mcommit 7ca1035d67876237833d3e0c496754faf23a1c2c[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Mon Oct 7 22:58:55 2024 -0500
+
+    TG-34 #done feat: final linter and ignore cors for presentation
+
+[33mcommit 912dc30e06587ed64c01af550d753f27d6925491[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Mon Oct 7 22:47:31 2024 -0500
+
+    TG-34 #done test: linted code
+
+[33mcommit 5cb129399adc5be22a81869ffd2f09ca15e94742[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Mon Oct 7 22:39:36 2024 -0500
+
+    TG-34 #done test: linted code
+
+[33mcommit 1524d381b5b9c3ea4dd475e4060235c749db974e[m
+Merge: d5b3037 595933a
+Author: JhosepLS <143119700+JhosepLS@users.noreply.github.com>
+Date:   Mon Oct 7 17:20:13 2024 -0500
+
+    Merge pull request #2 from patrickram99/back-linter
+    
+    TG-34 #done feat: Add linter for backend
+
+[33mcommit 595933abd380ff10926763046568ec7ff06aa11b[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Mon Oct 7 17:16:18 2024 -0500
+
+    TG-34 #done feat: Add linter for backend
+
+[33mcommit d5b30373f8192125a9f2e1665d878b5d03a82254[m
+Merge: 888da3e e592c53
+Author: JhosepLS <143119700+JhosepLS@users.noreply.github.com>
+Date:   Mon Oct 7 16:42:48 2024 -0500
+
+    Merge pull request #1 from patrickram99/extensions
+    
+    Extensions
+
+[33mcommit e592c53d9b1bee82a0558e301b353c12227f7292[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Mon Oct 7 16:38:19 2024 -0500
+
+    TG-34 #done test: linted code
+
+[33mcommit 8d92d58307205c55737319445eab1cb1e7d89376[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Mon Oct 7 16:27:26 2024 -0500
+
+    TG-34 #done test: linted code
+
+[33mcommit 01338ccbd083bce58a194305ee93198a30c9ced1[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Mon Oct 7 14:00:30 2024 -0500
+
+    TG-34 #done test: linted code
+
+[33mcommit 6cd7761733c7e15522f762dbf1c7d2100fac916e[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Mon Oct 7 07:42:20 2024 -0500
+
+    TG-34 #done test: add final formatter
+
+[33mcommit 628b9f02a7b65b69e480d163953a9e412ea6fe38[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Mon Oct 7 07:40:43 2024 -0500
+
+    TG-34 #done test: add specific commits format
+
+[33mcommit ab6dab0a18b1981aa9215310ae816a5fb8236699[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Mon Oct 7 07:26:47 2024 -0500
+
+    TG-34 #done feat: add specific commits format
+
+[33mcommit 888da3ee6719f31fbcc4c834395cc9549df63092[m
+Author: Patrick Andres Ramirez Santos <pramirezs@ulasalle.edu.pe>
+Date:   Sun Oct 6 22:08:06 2024 -0500
+
+    Update README.md
+
+[33mcommit b5864eac5cc6e3c5b5e175e942484cedcd5b1393[m
+Author: Patrick Andres Ramirez Santos <pramirezs@ulasalle.edu.pe>
+Date:   Sun Oct 6 22:04:21 2024 -0500
+
+    Update README.md
+
+[33mcommit 0abc03e2df58b6b2dffca7e5166023e4cda3f5d8[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Sun Oct 6 21:57:33 2024 -0500
+
+    feat: fix linter and commits
+
+[33mcommit 8fbb50e0334158bdc0585053881bfc0ec4fd15ff[m
+Author: Patrick Andres Ramirez Santos <pramirezs@ulasalle.edu.pe>
+Date:   Sun Oct 6 21:57:02 2024 -0500
+
+    Update README.md
+
+[33mcommit a94b9c21c2d03efa8fdee812d91da1e1ea226b89[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Sun Oct 6 21:53:59 2024 -0500
+
+    feat: start repo
+
+[33mcommit b31501c7d1d5c2b3ea961460adefc2597f24e1f0[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Sun Oct 6 21:51:21 2024 -0500
+
+    feat: add README
+
+[33mcommit 8003c6b6765ada8f98692072038f37c132233206[m
+Author: Patrick Ramirez <pramirezs@ulasalle.edu.pe>
+Date:   Sun Oct 6 21:44:46 2024 -0500
+
+    Functional repo
