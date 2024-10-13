@@ -49,6 +49,7 @@ const OrderProgress: React.FC<{ steps: { label: string; isCompleted: boolean }[]
 }
 
 const CarritoCompras: React.FC = () => {
+  const navigate = useNavigate()
   const [productos, setProductos] = useState<Producto[]>([
     {
       imagen: '/img/gabinete1.jpg',
@@ -72,7 +73,6 @@ const CarritoCompras: React.FC = () => {
   const [codigoDescuento, setCodigoDescuento] = useState<string>('')
   const [mostrarEnvio, setMostrarEnvio] = useState<boolean>(false)
   const [mostrarDescuento, setMostrarDescuento] = useState<boolean>(false)
-  const navigate = useNavigate()
 
   useEffect(() => {
     calcularTotal(productos)
@@ -113,9 +113,20 @@ const CarritoCompras: React.FC = () => {
   }
 
   const comprar = () => {
-    navigate('/confirmacion', { state: { productos } }) // Pasar productos
-  }
+    const productosConCantidades = productos.map(producto => ({
+      ...producto,
+      cantidad: producto.cantidad || 1,
+    }))
 
+    const totalFinal = totalCarrito + tarifaEnvio + 18
+
+    navigate('/confirmacion', {
+      state: {
+        productos: productosConCantidades,
+        totalFinal: totalFinal,
+      },
+    })
+  }
   const orderSteps = [
     { label: 'Carrito', isCompleted: true },
     { label: 'Confirmación de Pago', isCompleted: false },
@@ -318,7 +329,7 @@ const CarritoCompras: React.FC = () => {
                   />
                   <button
                     onClick={() => alert('Código aplicado!')}
-                    className="mt-2 w-full rounded-full bg-green-500 p-2 text-white hover:bg-green-600"
+                    className="mt-2 w-full rounded-full bg-[#1A6DAF] p-2 text-white hover:bg-blue-600"
                   >
                     Aplicar
                   </button>

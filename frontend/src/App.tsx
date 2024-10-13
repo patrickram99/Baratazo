@@ -5,6 +5,7 @@ import Carousel from './components/Carousel'
 import ProductosNuevos from './components/ProductosNuevos'
 import CarritoCompras from './components/CarritoCompras'
 import ConfirmacionDatos from './components/ConfirmacionDatos'
+import AgregarMetodoPago from './components/AgregarMetodoPago'
 import Footer from './components/Footer'
 import './App.css'
 
@@ -44,8 +45,16 @@ const App: React.FC = () => {
             <Route
               path="/confirmacion"
               element={
-                <div className="rounded-lg bg-white p-[#FFFFFF]">
+                <div className="rounded-lg bg-white p-4">
                   <ConfirmacionDatos />
+                </div>
+              }
+            />
+            <Route
+              path="/agregar-metodo-pago"
+              element={
+                <div className="rounded-lg bg-white p-4">
+                  <AgregarMetodoPago />
                 </div>
               }
             />

@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-interface Product {
-  id: number
-  name: string
-  price: number
-  imageUrl: string
+interface Producto {
+  imagen: string
+  nombre: string
+  descripcion: string
+  precio: string
+  cantidad?: number
 }
-
 const OrderProgress: React.FC<{ steps: { label: string; isCompleted: boolean }[] }> = ({
   steps,
 }) => {
@@ -47,6 +48,12 @@ const OrderProgress: React.FC<{ steps: { label: string; isCompleted: boolean }[]
 }
 
 const ConfirmacionDatos: React.FC = () => {
+  const location = useLocation()
+  const navigate = useNavigate()
+  const { productos, totalFinal } = location.state as {
+    productos: Producto[]
+    totalFinal: number
+  }
   const [usarDatosCuenta, setUsarDatosCuenta] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState<string>('')
 
@@ -60,22 +67,19 @@ const ConfirmacionDatos: React.FC = () => {
     { label: 'Entrega', isCompleted: false },
   ]
 
-  const products: Product[] = [
-    {
-      id: 1,
-      name: 'CASE OFICINA, TEROS, MICRO ATX TERT29 BLACK',
-      price: 74.0,
-      imageUrl: '/img/gabinete1.jpg',
-    },
-    {
-      id: 2,
-      name: 'PROCESADOR AMD RYZEN 3 3200G, 3.6GHZ 3RA GEN',
-      price: 319.0,
-      imageUrl: '/img/gabinete2.jpg',
-    },
-  ]
-
-  const totalAmount = products.reduce((sum, product) => sum + product.price, 0)
+  const handleAgregarMetodoPago = () => {
+    navigate('/agregar-metodo-pago', {
+      state: {
+        productos,
+        totalFinal,
+        orderSteps: [
+          { label: 'Carrito', isCompleted: true },
+          { label: 'Confirmación de Pago', isCompleted: true },
+          { label: 'Método de Pago', isCompleted: false },
+        ],
+      },
+    })
+  }
 
   return (
     <div className="bg-white">
@@ -228,7 +232,8 @@ const ConfirmacionDatos: React.FC = () => {
 
             <div className="mt-8 flex">
               <button
-                type="submit"
+                type="button"
+                onClick={handleAgregarMetodoPago}
                 className="mr-4 rounded-full bg-[#1A6DAF] px-6 py-2 text-white transition duration-300 hover:bg-blue-600"
               >
                 Agregar método de pago
@@ -246,56 +251,64 @@ const ConfirmacionDatos: React.FC = () => {
             <div className="mb-4 flex justify-end">
               <OrderProgress steps={orderSteps} />
             </div>
-            <div className="rounded bg-white p-6 shadow-md">
+            <div className="mb-6 rounded bg-[#F5F7FF] p-6 shadow-md">
               <h2 className="mb-4 text-xl font-bold">Resumen del pedido</h2>
-              <ul className="mb-4">
-                {products.map(product => (
-                  <li key={product.id} className="mb-2 flex items-center">
-                    <img
-                      src={product.imageUrl}
-                      alt={product.name}
-                      className="mr-4 h-12 w-12 object-cover"
-                    />
-                    <div>
-                      <span className="font-semibold">{product.name}</span>
-                      <p>S/. {product.price.toFixed(2)}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+              {productos && productos.length > 0 ? (
+                <ul>
+                  {productos.map((producto: Producto, index: number) => (
+                    <li key={index} className="mb-4 flex items-start">
+                      <img
+                        src={producto.imagen}
+                        alt={producto.nombre}
+                        className="mr-4 h-16 w-16 object-cover"
+                      />
+                      <div className="flex flex-grow flex-col">
+                        <h3 className="font-semibold">{producto.nombre}</h3>
+                        <div className="mt-1 flex items-center justify-between">
+                          <span>Cant: {producto.cantidad}</span>
+                          <span className="font-medium">
+                            S/ {parseFloat(producto.precio.replace('S/ ', '')).toFixed(2)}
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No hay productos en el carrito.</p>
+              )}
               <div className="flex justify-between border-t pt-4">
-                <span className="font-bold">Total:</span>
-                <span className="font-bold">S/. {totalAmount.toFixed(2)}</span>
+                <span className="font-bold">Total del pedido:</span>
+                <span className="font-bold">S/. {totalFinal.toFixed(2)}</span>
               </div>
+            </div>
 
-              <div className="mt-6">
-                <h3 className="mb-2 font-bold">Método de pago</h3>
-                <div className="space-y-2">
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="card"
-                      checked={paymentMethod === 'card'}
-                      onChange={() => setPaymentMethod('card')}
-                      className="mr-2"
-                    />
-                    Tarjeta débito/crédito
-                  </label>
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="cash"
-                      checked={paymentMethod === 'cash'}
-                      onChange={() => setPaymentMethod('cash')}
-                      className="mr-2"
-                    />
-                    Pago efectivo
-                  </label>
-                </div>
+            <div className="rounded bg-white p-6 shadow-md">
+              <h3 className="mb-2 font-bold">Método de pago</h3>
+              <div className="space-y-2">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="card"
+                    checked={paymentMethod === 'card'}
+                    onChange={() => setPaymentMethod('card')}
+                    className="mr-2"
+                  />
+                  Tarjeta débito/crédito
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="cash"
+                    checked={paymentMethod === 'cash'}
+                    onChange={() => setPaymentMethod('cash')}
+                    className="mr-2"
+                  />
+                  Pago efectivo
+                </label>
               </div>
-
               {!paymentMethod && <p className="mt-2 text-red-500">Seleccione su método de pago</p>}
             </div>
           </div>
