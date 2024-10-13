@@ -13,6 +13,9 @@ export default {
         celeste: '#F5F7FF',
       },
     },
+    fontFamily: {
+      pop: ['Poppins', 'sans-serif'],
+    },
   },
   plugins: [],
 }

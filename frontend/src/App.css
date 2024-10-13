@@ -5,6 +5,7 @@
   min-height: 100vh; /* Asegura que el contenedor ocupe al menos la altura de la ventana */
   padding: 0; /* Elimina el padding */
   margin: 0; /* Elimina el margen */
+  background-color: white;
 }
 
 .logo {
@@ -33,4 +34,20 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/*Confirmación de datos boton "Usar datos predefinidos de la cuenta" */
+input[type="checkbox"] {
+  -webkit-appearance: none; /* Elimina el estilo por defecto */
+  width: 24px; /* Ajusta el tamaño */
+  height: 24px;
+  border-radius: 50%; /* Hace que sea circular */
+  border: 2px solid #1A6DAF; /* Color del borde */
+  background-color: white; /* Color de fondo */
+  cursor: pointer; /* Cambia el cursor */
+  outline: none; /* Elimina el contorno */
+}
+
+input[type="checkbox"]:checked {
+  background-color: #1A6DAF; /* Color de fondo cuando está seleccionado */
 }

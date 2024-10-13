@@ -1,29 +1,108 @@
 import React, { useState } from 'react'
 
+interface Product {
+  id: number
+  name: string
+  price: number
+  imageUrl: string
+}
+
+const OrderProgress: React.FC<{ steps: { label: string; isCompleted: boolean }[] }> = ({
+  steps,
+}) => {
+  return (
+    <div className="w-full max-w-xs">
+      <div className="relative flex items-center justify-between">
+        {steps.map((step, index) => (
+          <React.Fragment key={step.label}>
+            {index > 0 && (
+              <div
+                className="absolute h-0.5 flex-grow bg-gray-300"
+                style={{
+                  left: `calc(${(index - 1) * (100 / (steps.length - 1))}% + 20px)`,
+                  right: `calc(${100 - index * (100 / (steps.length - 1))}% + 20px)`,
+                  top: '14px',
+                }}
+              />
+            )}
+            <div className="relative z-10 flex flex-col items-center">
+              <div
+                className={`flex h-8 w-8 items-center justify-center rounded-full border-2 ${
+                  step.isCompleted ? 'bg-[#1A6DAF]' : 'border-gray-300 bg-white'
+                }`}
+              >
+                {step.isCompleted ? (
+                  <span className="text-sm text-white">✓</span>
+                ) : (
+                  <span className="text-sm text-gray-500">{index + 1}</span>
+                )}
+              </div>
+              <span className="mt-2 text-center text-xs text-black">{step.label}</span>
+            </div>
+          </React.Fragment>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 const ConfirmacionDatos: React.FC = () => {
   const [usarDatosCuenta, setUsarDatosCuenta] = useState(false)
+  const [paymentMethod, setPaymentMethod] = useState<string>('')
 
   const handleUsarDatosCuentaChange = () => {
     setUsarDatosCuenta(!usarDatosCuenta)
   }
 
+  const orderSteps = [
+    { label: 'Carrito', isCompleted: true },
+    { label: 'Confirmación de Pago', isCompleted: true },
+    { label: 'Entrega', isCompleted: false },
+  ]
+
+  const products: Product[] = [
+    {
+      id: 1,
+      name: 'CASE OFICINA, TEROS, MICRO ATX TERT29 BLACK',
+      price: 74.0,
+      imageUrl: '/img/gabinete1.jpg',
+    },
+    {
+      id: 2,
+      name: 'PROCESADOR AMD RYZEN 3 3200G, 3.6GHZ 3RA GEN',
+      price: 319.0,
+      imageUrl: '/img/gabinete2.jpg',
+    },
+  ]
+
+  const totalAmount = products.reduce((sum, product) => sum + product.price, 0)
+
   return (
-    <div className="bg-gray-100 p-6">
+    <div className="bg-white">
       <div className="mx-auto max-w-6xl">
-        <h1 className="mb-6 text-3xl font-bold">Confirmación de datos</h1>
+        <nav className="mb-1">
+          <span className="text-gray-900">Home </span>
+          <span className="text-[#1A6DAF]">&gt; </span>
+          <span className="text-gray-900">Carrito</span>
+          <span className="text-[#1A6DAF]">&gt; </span>
+          <span className="text-gray-900">Confirmación</span>
+        </nav>
+
+        <h1 className="text-3xl font-bold">Confirmación de datos</h1>
+
         <div className="-mx-4 flex flex-wrap">
-          <form className="mb-8 w-full px-4 lg:w-2/3">
-            <div className="mb-6">
-              <label htmlFor="email" className="mb-2 block font-semibold">
-                Dirección de correo electrónico *
-              </label>
+          <form className="mb-8 w-full lg:w-2/3">
+            <label htmlFor="email" className="mb-2 block font-semibold">
+              Dirección de correo electrónico *
+            </label>
+            <div className="flex items-center">
               <input
                 type="email"
                 id="email"
                 required
-                className="w-full rounded border border-gray-300 p-2"
+                className="w-1/2 rounded border border-gray-300 p-2"
               />
-              <div className="mt-2 flex items-center">
+              <div className="ml-4 mt-0 flex items-center">
                 <input
                   type="checkbox"
                   id="usar-datos-cuenta"
@@ -31,7 +110,9 @@ const ConfirmacionDatos: React.FC = () => {
                   onChange={handleUsarDatosCuentaChange}
                   className="mr-2"
                 />
-                <label htmlFor="usar-datos-cuenta">Usar datos predefinidos de la cuenta?</label>
+                <label htmlFor="usar-datos-cuenta" className="font-semibold">
+                  Usar datos predefinidos de la cuenta?
+                </label>
               </div>
             </div>
 
@@ -68,7 +149,7 @@ const ConfirmacionDatos: React.FC = () => {
                 type="tel"
                 id="telefono"
                 required
-                className="w-full rounded border border-gray-300 p-2"
+                className="w-1/2 rounded border border-gray-300 p-2"
               />
             </div>
 
@@ -145,16 +226,16 @@ const ConfirmacionDatos: React.FC = () => {
               </div>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 flex">
               <button
                 type="submit"
-                className="mr-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+                className="mr-4 rounded-full bg-[#1A6DAF] px-6 py-2 text-white transition duration-300 hover:bg-blue-600"
               >
                 Agregar método de pago
               </button>
               <button
                 type="button"
-                className="rounded bg-gray-500 px-4 py-2 text-white hover:bg-gray-600"
+                className="rounded-full bg-[#FDCD11] px-6 py-2 text-white transition duration-300 hover:bg-yellow-400"
               >
                 Cancelar
               </button>
@@ -162,50 +243,60 @@ const ConfirmacionDatos: React.FC = () => {
           </form>
 
           <div className="w-full px-4 lg:w-1/3">
-            <div className="rounded bg-white p-6 shadow">
+            <div className="mb-4 flex justify-end">
+              <OrderProgress steps={orderSteps} />
+            </div>
+            <div className="rounded bg-white p-6 shadow-md">
               <h2 className="mb-4 text-xl font-bold">Resumen del pedido</h2>
               <ul className="mb-4">
-                <li className="mb-2 flex items-center">
-                  <img
-                    src="/img/auriculares1.jpg"
-                    alt="Producto 1"
-                    className="mr-4 h-12 w-12 object-cover"
-                  />
-                  <span>Producto 1 - S/ 340.00</span>
-                </li>
-                <li className="mb-2 flex items-center">
-                  <img
-                    src="/img/gabinete1.jpg"
-                    alt="Producto 2"
-                    className="mr-4 h-12 w-12 object-cover"
-                  />
-                  <span>Producto 2 - S/ 280.00</span>
-                </li>
+                {products.map(product => (
+                  <li key={product.id} className="mb-2 flex items-center">
+                    <img
+                      src={product.imageUrl}
+                      alt={product.name}
+                      className="mr-4 h-12 w-12 object-cover"
+                    />
+                    <div>
+                      <span className="font-semibold">{product.name}</span>
+                      <p>S/. {product.price.toFixed(2)}</p>
+                    </div>
+                  </li>
+                ))}
               </ul>
-              <h3 className="mb-4 font-bold">Total del pedido: S/ 620.00</h3>
-              <div>
-                <p className="mb-2 font-semibold">Método de pago</p>
-                <div className="mb-2 flex items-center">
-                  <input
-                    type="radio"
-                    id="tarjeta"
-                    name="metodo-pago"
-                    value="tarjeta"
-                    className="mr-2"
-                  />
-                  <label htmlFor="tarjeta">Tarjeta débito/crédito</label>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="radio"
-                    id="efectivo"
-                    name="metodo-pago"
-                    value="efectivo"
-                    className="mr-2"
-                  />
-                  <label htmlFor="efectivo">Pago en efectivo</label>
+              <div className="flex justify-between border-t pt-4">
+                <span className="font-bold">Total:</span>
+                <span className="font-bold">S/. {totalAmount.toFixed(2)}</span>
+              </div>
+
+              <div className="mt-6">
+                <h3 className="mb-2 font-bold">Método de pago</h3>
+                <div className="space-y-2">
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="card"
+                      checked={paymentMethod === 'card'}
+                      onChange={() => setPaymentMethod('card')}
+                      className="mr-2"
+                    />
+                    Tarjeta débito/crédito
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="cash"
+                      checked={paymentMethod === 'cash'}
+                      onChange={() => setPaymentMethod('cash')}
+                      className="mr-2"
+                    />
+                    Pago efectivo
+                  </label>
                 </div>
               </div>
+
+              {!paymentMethod && <p className="mt-2 text-red-500">Seleccione su método de pago</p>}
             </div>
           </div>
         </div>
