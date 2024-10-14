@@ -135,6 +135,7 @@ model Order {
   id                Int             @id @default(autoincrement())
   userId            Int?
   guestEmail        String?
+  guestPhone        String?
   status            OrderStatus
   totalAmount       Float
   paymentMethod     String
