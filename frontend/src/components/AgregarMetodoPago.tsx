@@ -14,9 +14,11 @@ interface OrderStep {
   isCompleted: boolean
 }
 
-const OrderProgress: React.FC<{ steps: OrderStep[] }> = ({ steps }) => {
+const OrderProgress: React.FC<{ steps: { label: string; isCompleted: boolean }[] }> = ({
+  steps,
+}) => {
   return (
-    <div className="mb-4 w-full max-w-xs">
+    <div className="w-full max-w-xs">
       <div className="relative flex items-center justify-between">
         {steps.map((step, index) => (
           <React.Fragment key={step.label}>
@@ -33,7 +35,7 @@ const OrderProgress: React.FC<{ steps: OrderStep[] }> = ({ steps }) => {
             <div className="relative z-10 flex flex-col items-center">
               <div
                 className={`flex h-8 w-8 items-center justify-center rounded-full border-2 ${
-                  step.isCompleted ? 'border-blue-500 bg-blue-500' : 'border-gray-300 bg-white'
+                  step.isCompleted ? 'bg-[#1A6DAF]' : 'border-gray-300 bg-white'
                 }`}
               >
                 {step.isCompleted ? (
@@ -42,13 +44,7 @@ const OrderProgress: React.FC<{ steps: OrderStep[] }> = ({ steps }) => {
                   <span className="text-sm text-gray-500">{index + 1}</span>
                 )}
               </div>
-              <span
-                className={`mt-2 text-center text-xs ${
-                  step.isCompleted ? 'font-medium text-blue-500' : 'text-gray-500'
-                }`}
-              >
-                {step.label}
-              </span>
+              <span className="mt-2 text-center text-xs text-black">{step.label}</span>
             </div>
           </React.Fragment>
         ))}
@@ -60,7 +56,7 @@ const OrderProgress: React.FC<{ steps: OrderStep[] }> = ({ steps }) => {
 const AgregarMetodoPago: React.FC = () => {
   const location = useLocation()
   const navigate = useNavigate()
-  const { productos, totalFinal, formData, paymentMethod, orderSteps } = location.state as {
+  const { productos, totalFinal, formData, paymentMethod } = location.state as {
     productos: Producto[]
     totalFinal: number
     orderSteps: OrderStep[]
@@ -166,6 +162,11 @@ const AgregarMetodoPago: React.FC = () => {
       alert('Hubo un problema al procesar su pago. Inténtelo nuevamente.')
     }
   }
+  const orderSteps = [
+    { label: 'Carrito', isCompleted: true },
+    { label: 'Confirmación de Pago', isCompleted: true },
+    { label: 'Entrega', isCompleted: false },
+  ]
 
   const handleReturn = () => {
     navigate(-1)
