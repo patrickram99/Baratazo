@@ -106,8 +106,15 @@ const ConfirmacionDatos: React.FC = () => {
   ]
 
   const handleAgregarMetodoPago = () => {
+    if (!paymentMethod) {
+      setShowErrorMessage(true) // Mostrar mensaje si no se ha seleccionado método de pago
+      return
+    }
+
     if (validateForm()) {
-      navigate('/agregar-metodo-pago', {
+      const redirectPath = paymentMethod === 'cash' ? '/pago-Efectivo' : '/agregar-metodo-pago'
+
+      navigate(redirectPath, {
         state: {
           productos,
           totalFinal,
