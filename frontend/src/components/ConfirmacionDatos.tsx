@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 interface Producto {
@@ -56,6 +56,44 @@ const ConfirmacionDatos: React.FC = () => {
   }
   const [usarDatosCuenta, setUsarDatosCuenta] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState<string>('')
+  const [formData, setFormData] = useState({
+    email: '',
+    nombre: '',
+    apellido: '',
+    telefono: '',
+    pais: '',
+    estado: '',
+    direccion: '',
+    ciudad: '',
+    codigoPostal: '',
+    referencia: '',
+  })
+  const [showErrorMessage, setShowErrorMessage] = useState(false)
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { id, value } = e.target
+    setFormData(prevData => ({
+      ...prevData,
+      [id]: value,
+    }))
+  }
+
+  const validateForm = () => {
+    const requiredFields = [
+      'email',
+      'nombre',
+      'apellido',
+      'telefono',
+      'pais',
+      'estado',
+      'direccion',
+      'ciudad',
+      'codigoPostal',
+    ]
+    const isValid = requiredFields.every(field => formData[field as keyof typeof formData])
+    setShowErrorMessage(!isValid)
+    return isValid
+  }
 
   const handleUsarDatosCuentaChange = () => {
     setUsarDatosCuenta(!usarDatosCuenta)
@@ -68,19 +106,37 @@ const ConfirmacionDatos: React.FC = () => {
   ]
 
   const handleAgregarMetodoPago = () => {
-    navigate('/agregar-metodo-pago', {
-      state: {
-        productos,
-        totalFinal,
-        orderSteps: [
-          { label: 'Carrito', isCompleted: true },
-          { label: 'Confirmación de Pago', isCompleted: true },
-          { label: 'Método de Pago', isCompleted: false },
-        ],
-      },
-    })
+    if (validateForm()) {
+      navigate('/agregar-metodo-pago', {
+        state: {
+          productos,
+          totalFinal,
+          formData,
+          paymentMethod,
+          orderSteps: [
+            { label: 'Carrito', isCompleted: true },
+            { label: 'Confirmación de Pago', isCompleted: true },
+            { label: 'Método de Pago', isCompleted: false },
+          ],
+        },
+      })
+    } else {
+      setShowErrorMessage(true)
+    }
   }
 
+  const handleCancel = () => {
+    navigate(-1)
+  }
+
+  useEffect(() => {
+    if (showErrorMessage) {
+      const timer = setTimeout(() => {
+        setShowErrorMessage(false)
+      }, 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [showErrorMessage])
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-6xl">
@@ -96,6 +152,12 @@ const ConfirmacionDatos: React.FC = () => {
 
         <div className="-mx-4 flex flex-wrap">
           <form className="mb-8 w-full lg:w-2/3">
+            {showErrorMessage && (
+              <div className="mb-4 rounded bg-red-100 p-4 text-red-700">
+                ¡Debes de rellenar estos campos primero!
+              </div>
+            )}
+
             <label htmlFor="email" className="mb-2 block font-semibold">
               Dirección de correo electrónico *
             </label>
@@ -105,6 +167,8 @@ const ConfirmacionDatos: React.FC = () => {
                 id="email"
                 required
                 className="w-1/2 rounded border border-gray-300 p-2"
+                value={formData.email}
+                onChange={handleInputChange}
               />
               <div className="ml-4 mt-0 flex items-center">
                 <input
@@ -130,8 +194,11 @@ const ConfirmacionDatos: React.FC = () => {
                   id="nombre"
                   required
                   className="w-full rounded border border-gray-300 p-2"
+                  value={formData.nombre}
+                  onChange={handleInputChange}
                 />
               </div>
+
               <div className="w-full px-2 md:w-1/2">
                 <label htmlFor="apellido" className="mb-2 block font-semibold">
                   Apellido *
@@ -141,6 +208,8 @@ const ConfirmacionDatos: React.FC = () => {
                   id="apellido"
                   required
                   className="w-full rounded border border-gray-300 p-2"
+                  value={formData.apellido}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -154,6 +223,8 @@ const ConfirmacionDatos: React.FC = () => {
                 id="telefono"
                 required
                 className="w-1/2 rounded border border-gray-300 p-2"
+                value={formData.telefono}
+                onChange={handleInputChange}
               />
             </div>
 
@@ -162,7 +233,14 @@ const ConfirmacionDatos: React.FC = () => {
                 <label htmlFor="pais" className="mb-2 block font-semibold">
                   País *
                 </label>
-                <select id="pais" required className="w-full rounded border border-gray-300 p-2">
+                <select
+                  id="pais"
+                  required
+                  className="w-full rounded border border-gray-300 p-2"
+                  value={formData.pais}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Seleccione un país</option>
                   <option value="peru">Perú</option>
                   <option value="argentina">Argentina</option>
                   <option value="chile">Chile</option>
@@ -177,6 +255,8 @@ const ConfirmacionDatos: React.FC = () => {
                   id="estado"
                   required
                   className="w-full rounded border border-gray-300 p-2"
+                  value={formData.estado}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -191,6 +271,8 @@ const ConfirmacionDatos: React.FC = () => {
                   id="direccion"
                   required
                   className="w-full rounded border border-gray-300 p-2"
+                  value={formData.direccion}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="w-full px-2 md:w-1/2">
@@ -202,6 +284,8 @@ const ConfirmacionDatos: React.FC = () => {
                   id="ciudad"
                   required
                   className="w-full rounded border border-gray-300 p-2"
+                  value={formData.ciudad}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -213,9 +297,11 @@ const ConfirmacionDatos: React.FC = () => {
                 </label>
                 <input
                   type="text"
-                  id="codigo-postal"
+                  id="codigoPostal"
                   required
                   className="w-full rounded border border-gray-300 p-2"
+                  value={formData.codigoPostal}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="w-full px-2 md:w-1/2">
@@ -234,12 +320,18 @@ const ConfirmacionDatos: React.FC = () => {
               <button
                 type="button"
                 onClick={handleAgregarMetodoPago}
-                className="mr-4 rounded-full bg-[#1A6DAF] px-6 py-2 text-white transition duration-300 hover:bg-blue-600"
+                className={`mr-4 rounded-full px-6 py-2 text-white transition duration-300 ${
+                  showErrorMessage
+                    ? 'cursor-not-allowed bg-gray-400'
+                    : 'bg-[#1A6DAF] hover:bg-blue-600'
+                }`}
+                disabled={showErrorMessage}
               >
                 Agregar método de pago
               </button>
               <button
                 type="button"
+                onClick={handleCancel}
                 className="rounded-full bg-[#FDCD11] px-6 py-2 text-white transition duration-300 hover:bg-yellow-400"
               >
                 Cancelar

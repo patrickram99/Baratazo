@@ -60,10 +60,23 @@ const OrderProgress: React.FC<{ steps: OrderStep[] }> = ({ steps }) => {
 const AgregarMetodoPago: React.FC = () => {
   const location = useLocation()
   const navigate = useNavigate()
-  const { productos, totalFinal, orderSteps } = location.state as {
+  const { productos, totalFinal, formData, paymentMethod, orderSteps } = location.state as {
     productos: Producto[]
     totalFinal: number
     orderSteps: OrderStep[]
+    formData: {
+      email: string
+      nombre: string
+      apellido: string
+      telefono: string
+      pais: string
+      estado: string
+      direccion: string
+      ciudad: string
+      codigoPostal: string
+      referencia: string
+    }
+    paymentMethod: string
   }
 
   const [cardNumber, setCardNumber] = useState('')
@@ -82,7 +95,7 @@ const AgregarMetodoPago: React.FC = () => {
     setCvv(e.target.value)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     // Validación básica
@@ -91,21 +104,73 @@ const AgregarMetodoPago: React.FC = () => {
       return
     }
 
-    // Mostrar los datos ingresados
-    alert(`Método de pago agregado:\n
-      Número de tarjeta: ${cardNumber}\n
-      Fecha de vencimiento: ${expiryDate}\n
-      CVV: ${cvv}`)
+    // Formatear los datos para la REQ-001
+    const orderData = {
+      email: formData.email,
+      phoneNumber: formData.telefono,
+      totalAmount: totalFinal, // Asignar el total final calculado
+      paymentMethod: paymentMethod,
+      paymentDetails: {
+        cardNumber: cardNumber.replace(/\s+/g, ''),
+        cardHolderName: `${formData.nombre} ${formData.apellido}`,
+        expirationMonth: expiryDate.split('/')[0],
+        expirationYear: '20' + expiryDate.split('/')[1],
+        securityCode: cvv,
+      },
+      shippingAddress: {
+        country: formData.pais,
+        addressLine1: formData.direccion,
+        addressLine2: formData.referencia || '',
+        state: formData.estado,
+        city: formData.ciudad,
+        postalCode: formData.codigoPostal,
+        description: formData.referencia,
+      },
+      items: productos.map((producto, index) => ({
+        productId: index + 1, // Usar índices como ejemplo, ajustar según sea necesario
+        quantity: producto.cantidad || 1,
+        price: parseFloat(producto.precio.replace('S/ ', '')), // Eliminar la "S/" del precio y convertirlo a número
+      })),
+    }
+    // Imprimir el JSON en consola
+    console.log('Datos de la orden:', orderData)
 
-    // Restablecer el formulario
-    setCardNumber('')
-    setExpiryDate('')
-    setCvv('')
+    try {
+      const response = await fetch('http://localhost:3000/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData),
+      })
+
+      if (!response.ok) {
+        throw new Error('Error al procesar el pago')
+      }
+
+      const data = await response.json()
+
+      navigate('/order-confirmation', {
+        state: {
+          orderResponse: data,
+          productos,
+          totalFinal,
+        },
+      })
+
+      setCardNumber('')
+      setExpiryDate('')
+      setCvv('')
+    } catch (error) {
+      console.error('Error en la solicitud:', error)
+      alert('Hubo un problema al procesar su pago. Inténtelo nuevamente.')
+    }
   }
 
   const handleReturn = () => {
     navigate(-1)
   }
+
   return (
     <div className="min-h-screen bg-white">
       <div className="mx-auto max-w-6xl">
@@ -119,19 +184,14 @@ const AgregarMetodoPago: React.FC = () => {
           <span className="text-[#4D4D4D]">Método de pago</span>
         </nav>
 
-        {/* Contenedor principal con flexbox */}
         <div className="flex justify-between">
-          {/* Formulario a la izquierda */}
           <div className="mr-8 max-w-md flex-grow">
             <h2 className="mb-1 text-2xl font-bold">Agregar método de pago</h2>
-            {/* Texto adicional debajo del título */}
             <p className="mb-4 text-base text-black">Tarjeta débito/crédito</p>
 
-            {/* Línea separadora */}
             <hr className="mb-6 border-gray-300" />
 
             <form onSubmit={handleSubmit} className="mb-8 flex flex-col">
-              {/* Número de tarjeta y fecha de vencimiento alineados */}
               <div className="flex space-x-4">
                 <div className="mb-4 flex-1">
                   <label htmlFor="cardNumber" className="mb-2 block font-medium">
@@ -163,7 +223,6 @@ const AgregarMetodoPago: React.FC = () => {
                 </div>
               </div>
 
-              {/* Campo CVV alineado a continuación */}
               <div className="mb-4 w-1/3">
                 <label htmlFor="cvv" className="mb-2 block font-medium">
                   CVV *
@@ -178,10 +237,8 @@ const AgregarMetodoPago: React.FC = () => {
                 />
               </div>
 
-              {/* Línea separadora entre formulario y botones */}
               <hr className="mb-4 border-gray-300" />
 
-              {/* Botones de acción */}
               <div className="flex space-x-4">
                 <button
                   type="submit"
@@ -201,7 +258,6 @@ const AgregarMetodoPago: React.FC = () => {
             </form>
           </div>
 
-          {/* Resumen y barra de progreso a la derecha */}
           <div className="w-1/3">
             <div className="mb-4 flex justify-end">
               <OrderProgress steps={orderSteps} />

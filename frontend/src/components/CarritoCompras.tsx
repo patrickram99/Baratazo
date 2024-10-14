@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 interface Producto {
@@ -73,22 +73,24 @@ const CarritoCompras: React.FC = () => {
   const [codigoDescuento, setCodigoDescuento] = useState<string>('')
   const [mostrarEnvio, setMostrarEnvio] = useState<boolean>(false)
   const [mostrarDescuento, setMostrarDescuento] = useState<boolean>(false)
+  const calcularTotal = useCallback(
+    (carrito: Producto[]) => {
+      const total = carrito.reduce((acc, producto) => {
+        const precio = parseFloat(producto.precio.replace('S/ ', '').replace(',', '.'))
+        const precioTotal = precio * (producto.cantidad || 1)
+        return acc + precioTotal
+      }, 0)
+
+      const costoEnvio = opcionEnvio === 'recoger' ? 0 : 21.0
+      setTarifaEnvio(costoEnvio)
+      setTotalCarrito(total)
+    },
+    [opcionEnvio]
+  )
 
   useEffect(() => {
     calcularTotal(productos)
-  }, [productos, opcionEnvio])
-
-  const calcularTotal = (carrito: Producto[]) => {
-    const total = carrito.reduce((acc, producto) => {
-      const precio = parseFloat(producto.precio.replace('S/ ', '').replace(',', '.'))
-      const precioConDescuento = precio - 8 // Aplicar descuento de 8 soles
-      return acc + precioConDescuento * (producto.cantidad || 1)
-    }, 0)
-
-    const costoEnvio = opcionEnvio === 'recoger' ? 0 : 21.0
-    setTarifaEnvio(costoEnvio)
-    setTotalCarrito(total)
-  }
+  }, [productos, calcularTotal])
 
   const actualizarCantidad = (index: number, nuevaCantidad: string) => {
     const carrito = [...productos]
@@ -157,9 +159,7 @@ const CarritoCompras: React.FC = () => {
                   <th className="px-2 py-3 text-left"></th>
                   <th className="px-2 py-3 text-left">Precio</th>
                   <th className="px-2 py-3 text-left">Cantidad</th>
-                  <th className="px-2 py-3 text-left">
-                    Precio con <br /> Descuento
-                  </th>
+                  <th className="px-2 py-3 text-left">Total</th>
                   <th className="px-2 py-3 text-left"></th>
                 </tr>
               </thead>
@@ -173,7 +173,7 @@ const CarritoCompras: React.FC = () => {
                 ) : (
                   productos.map((producto, index) => {
                     const precio = parseFloat(producto.precio.replace('S/ ', '').replace(',', '.'))
-                    const precioConDescuento = precio - 8 // Aplicar descuento de 8 soles
+                    const precioTotal = precio * (producto.cantidad || 1) // Aplicar descuento de 8 soles
                     return (
                       <tr key={index} className="border-b">
                         <td className="px-2 py-4">
@@ -197,7 +197,7 @@ const CarritoCompras: React.FC = () => {
                             className="w-16 rounded border px-2"
                           />
                         </td>
-                        <td className="px-2 py-4">{`S/ ${precioConDescuento.toFixed(2)}`}</td>
+                        <td className="px-2 py-4">{`S/ ${precioTotal.toFixed(2)}`}</td>
                         <td className="px-2 py-4">
                           <button
                             onClick={() => eliminarProducto(index)}
@@ -328,7 +328,8 @@ const CarritoCompras: React.FC = () => {
                     className="w-full rounded border p-2"
                   />
                   <button
-                    onClick={() => alert('Código aplicado!')}
+                    type="button"
+                    /* onClick={() => /*alert('Código aplicado!')}*/
                     className="mt-2 w-full rounded-full bg-[#1A6DAF] p-2 text-white hover:bg-blue-600"
                   >
                     Aplicar
