@@ -6,6 +6,7 @@ import ProductosNuevos from './components/ProductosNuevos'
 import CarritoCompras from './components/CarritoCompras'
 import ConfirmacionDatos from './components/ConfirmacionDatos'
 import AgregarMetodoPago from './components/AgregarMetodoPago'
+import PagoEfectivo from './components/PagoEfectivo' // Asegúrate de importar el componente
 import Footer from './components/Footer'
 import './App.css'
 
@@ -13,7 +14,6 @@ const App: React.FC = () => {
   return (
     <Router>
       <div className="flex min-h-screen flex-col bg-[#FFFFFF]">
-        {' '}
         {/* Cambié el color de fondo */}
         <MainNavigation />
         <main className="container mx-auto flex-grow px-4 py-8">
@@ -36,7 +36,6 @@ const App: React.FC = () => {
               path="/carrito"
               element={
                 <div className="p-6">
-                  {' '}
                   {/* Eliminé la clase bg-white */}
                   <CarritoCompras />
                 </div>
@@ -55,6 +54,14 @@ const App: React.FC = () => {
               element={
                 <div className="rounded-lg bg-white p-4">
                   <AgregarMetodoPago />
+                </div>
+              }
+            />
+            <Route
+              path="/pago-Efectivo" // Añadí esta ruta para PagoEfectivo
+              element={
+                <div className="rounded-lg bg-white p-4">
+                  <PagoEfectivo />
                 </div>
               }
             />
