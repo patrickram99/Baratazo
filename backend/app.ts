@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import bookRouter from './routes/book.route'
+import saleRouter from './routes/sale.route'
 
 const app = express()
 
@@ -8,6 +8,11 @@ const app = express()
 app.use(cors())
 
 app.use(express.json())
-app.use('/books', bookRouter)
+app.use('/api', saleRouter)
+
+app.use((err: Error, req: express.Request, res: express.Response) => {
+  console.error(err.stack)
+  res.status(500).send('Something went wrong!')
+})
 
 export default app
