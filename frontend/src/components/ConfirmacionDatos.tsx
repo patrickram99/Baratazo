@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-interface Product {
-  id: number
-  name: string
-  price: number
-  imageUrl: string
+interface Producto {
+  imagen: string
+  nombre: string
+  descripcion: string
+  precio: string
+  cantidad?: number
 }
-
 const OrderProgress: React.FC<{ steps: { label: string; isCompleted: boolean }[] }> = ({
   steps,
 }) => {
@@ -47,8 +48,52 @@ const OrderProgress: React.FC<{ steps: { label: string; isCompleted: boolean }[]
 }
 
 const ConfirmacionDatos: React.FC = () => {
+  const location = useLocation()
+  const navigate = useNavigate()
+  const { productos, totalFinal } = location.state as {
+    productos: Producto[]
+    totalFinal: number
+  }
   const [usarDatosCuenta, setUsarDatosCuenta] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState<string>('')
+  const [formData, setFormData] = useState({
+    email: '',
+    nombre: '',
+    apellido: '',
+    telefono: '',
+    pais: '',
+    estado: '',
+    direccion: '',
+    ciudad: '',
+    codigoPostal: '',
+    referencia: '',
+  })
+  const [showErrorMessage, setShowErrorMessage] = useState(false)
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { id, value } = e.target
+    setFormData(prevData => ({
+      ...prevData,
+      [id]: value,
+    }))
+  }
+
+  const validateForm = () => {
+    const requiredFields = [
+      'email',
+      'nombre',
+      'apellido',
+      'telefono',
+      'pais',
+      'estado',
+      'direccion',
+      'ciudad',
+      'codigoPostal',
+    ]
+    const isValid = requiredFields.every(field => formData[field as keyof typeof formData])
+    setShowErrorMessage(!isValid)
+    return isValid
+  }
 
   const handleUsarDatosCuentaChange = () => {
     setUsarDatosCuenta(!usarDatosCuenta)
@@ -60,23 +105,38 @@ const ConfirmacionDatos: React.FC = () => {
     { label: 'Entrega', isCompleted: false },
   ]
 
-  const products: Product[] = [
-    {
-      id: 1,
-      name: 'CASE OFICINA, TEROS, MICRO ATX TERT29 BLACK',
-      price: 74.0,
-      imageUrl: '/img/gabinete1.jpg',
-    },
-    {
-      id: 2,
-      name: 'PROCESADOR AMD RYZEN 3 3200G, 3.6GHZ 3RA GEN',
-      price: 319.0,
-      imageUrl: '/img/gabinete2.jpg',
-    },
-  ]
+  const handleAgregarMetodoPago = () => {
+    if (validateForm()) {
+      navigate('/agregar-metodo-pago', {
+        state: {
+          productos,
+          totalFinal,
+          formData,
+          paymentMethod,
+          orderSteps: [
+            { label: 'Carrito', isCompleted: true },
+            { label: 'Confirmación de Pago', isCompleted: true },
+            { label: 'Método de Pago', isCompleted: false },
+          ],
+        },
+      })
+    } else {
+      setShowErrorMessage(true)
+    }
+  }
 
-  const totalAmount = products.reduce((sum, product) => sum + product.price, 0)
+  const handleCancel = () => {
+    navigate(-1)
+  }
 
+  useEffect(() => {
+    if (showErrorMessage) {
+      const timer = setTimeout(() => {
+        setShowErrorMessage(false)
+      }, 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [showErrorMessage])
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-6xl">
@@ -92,6 +152,12 @@ const ConfirmacionDatos: React.FC = () => {
 
         <div className="-mx-4 flex flex-wrap">
           <form className="mb-8 w-full lg:w-2/3">
+            {showErrorMessage && (
+              <div className="mb-4 rounded bg-red-100 p-4 text-red-700">
+                ¡Debes de rellenar estos campos primero!
+              </div>
+            )}
+
             <label htmlFor="email" className="mb-2 block font-semibold">
               Dirección de correo electrónico *
             </label>
@@ -101,6 +167,8 @@ const ConfirmacionDatos: React.FC = () => {
                 id="email"
                 required
                 className="w-1/2 rounded border border-gray-300 p-2"
+                value={formData.email}
+                onChange={handleInputChange}
               />
               <div className="ml-4 mt-0 flex items-center">
                 <input
@@ -126,8 +194,11 @@ const ConfirmacionDatos: React.FC = () => {
                   id="nombre"
                   required
                   className="w-full rounded border border-gray-300 p-2"
+                  value={formData.nombre}
+                  onChange={handleInputChange}
                 />
               </div>
+
               <div className="w-full px-2 md:w-1/2">
                 <label htmlFor="apellido" className="mb-2 block font-semibold">
                   Apellido *
@@ -137,6 +208,8 @@ const ConfirmacionDatos: React.FC = () => {
                   id="apellido"
                   required
                   className="w-full rounded border border-gray-300 p-2"
+                  value={formData.apellido}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -150,6 +223,8 @@ const ConfirmacionDatos: React.FC = () => {
                 id="telefono"
                 required
                 className="w-1/2 rounded border border-gray-300 p-2"
+                value={formData.telefono}
+                onChange={handleInputChange}
               />
             </div>
 
@@ -158,7 +233,14 @@ const ConfirmacionDatos: React.FC = () => {
                 <label htmlFor="pais" className="mb-2 block font-semibold">
                   País *
                 </label>
-                <select id="pais" required className="w-full rounded border border-gray-300 p-2">
+                <select
+                  id="pais"
+                  required
+                  className="w-full rounded border border-gray-300 p-2"
+                  value={formData.pais}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Seleccione un país</option>
                   <option value="peru">Perú</option>
                   <option value="argentina">Argentina</option>
                   <option value="chile">Chile</option>
@@ -173,6 +255,8 @@ const ConfirmacionDatos: React.FC = () => {
                   id="estado"
                   required
                   className="w-full rounded border border-gray-300 p-2"
+                  value={formData.estado}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -187,6 +271,8 @@ const ConfirmacionDatos: React.FC = () => {
                   id="direccion"
                   required
                   className="w-full rounded border border-gray-300 p-2"
+                  value={formData.direccion}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="w-full px-2 md:w-1/2">
@@ -198,6 +284,8 @@ const ConfirmacionDatos: React.FC = () => {
                   id="ciudad"
                   required
                   className="w-full rounded border border-gray-300 p-2"
+                  value={formData.ciudad}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -209,9 +297,11 @@ const ConfirmacionDatos: React.FC = () => {
                 </label>
                 <input
                   type="text"
-                  id="codigo-postal"
+                  id="codigoPostal"
                   required
                   className="w-full rounded border border-gray-300 p-2"
+                  value={formData.codigoPostal}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="w-full px-2 md:w-1/2">
@@ -228,13 +318,20 @@ const ConfirmacionDatos: React.FC = () => {
 
             <div className="mt-8 flex">
               <button
-                type="submit"
-                className="mr-4 rounded-full bg-[#1A6DAF] px-6 py-2 text-white transition duration-300 hover:bg-blue-600"
+                type="button"
+                onClick={handleAgregarMetodoPago}
+                className={`mr-4 rounded-full px-6 py-2 text-white transition duration-300 ${
+                  showErrorMessage
+                    ? 'cursor-not-allowed bg-gray-400'
+                    : 'bg-[#1A6DAF] hover:bg-blue-600'
+                }`}
+                disabled={showErrorMessage}
               >
                 Agregar método de pago
               </button>
               <button
                 type="button"
+                onClick={handleCancel}
                 className="rounded-full bg-[#FDCD11] px-6 py-2 text-white transition duration-300 hover:bg-yellow-400"
               >
                 Cancelar
@@ -246,56 +343,64 @@ const ConfirmacionDatos: React.FC = () => {
             <div className="mb-4 flex justify-end">
               <OrderProgress steps={orderSteps} />
             </div>
-            <div className="rounded bg-white p-6 shadow-md">
+            <div className="mb-6 rounded bg-[#F5F7FF] p-6 shadow-md">
               <h2 className="mb-4 text-xl font-bold">Resumen del pedido</h2>
-              <ul className="mb-4">
-                {products.map(product => (
-                  <li key={product.id} className="mb-2 flex items-center">
-                    <img
-                      src={product.imageUrl}
-                      alt={product.name}
-                      className="mr-4 h-12 w-12 object-cover"
-                    />
-                    <div>
-                      <span className="font-semibold">{product.name}</span>
-                      <p>S/. {product.price.toFixed(2)}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+              {productos && productos.length > 0 ? (
+                <ul>
+                  {productos.map((producto: Producto, index: number) => (
+                    <li key={index} className="mb-4 flex items-start">
+                      <img
+                        src={producto.imagen}
+                        alt={producto.nombre}
+                        className="mr-4 h-16 w-16 object-cover"
+                      />
+                      <div className="flex flex-grow flex-col">
+                        <h3 className="font-semibold">{producto.nombre}</h3>
+                        <div className="mt-1 flex items-center justify-between">
+                          <span>Cant: {producto.cantidad}</span>
+                          <span className="font-medium">
+                            S/ {parseFloat(producto.precio.replace('S/ ', '')).toFixed(2)}
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No hay productos en el carrito.</p>
+              )}
               <div className="flex justify-between border-t pt-4">
-                <span className="font-bold">Total:</span>
-                <span className="font-bold">S/. {totalAmount.toFixed(2)}</span>
+                <span className="font-bold">Total del pedido:</span>
+                <span className="font-bold">S/. {totalFinal.toFixed(2)}</span>
               </div>
+            </div>
 
-              <div className="mt-6">
-                <h3 className="mb-2 font-bold">Método de pago</h3>
-                <div className="space-y-2">
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="card"
-                      checked={paymentMethod === 'card'}
-                      onChange={() => setPaymentMethod('card')}
-                      className="mr-2"
-                    />
-                    Tarjeta débito/crédito
-                  </label>
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="cash"
-                      checked={paymentMethod === 'cash'}
-                      onChange={() => setPaymentMethod('cash')}
-                      className="mr-2"
-                    />
-                    Pago efectivo
-                  </label>
-                </div>
+            <div className="rounded bg-white p-6 shadow-md">
+              <h3 className="mb-2 font-bold">Método de pago</h3>
+              <div className="space-y-2">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="card"
+                    checked={paymentMethod === 'card'}
+                    onChange={() => setPaymentMethod('card')}
+                    className="mr-2"
+                  />
+                  Tarjeta débito/crédito
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="cash"
+                    checked={paymentMethod === 'cash'}
+                    onChange={() => setPaymentMethod('cash')}
+                    className="mr-2"
+                  />
+                  Pago efectivo
+                </label>
               </div>
-
               {!paymentMethod && <p className="mt-2 text-red-500">Seleccione su método de pago</p>}
             </div>
           </div>
