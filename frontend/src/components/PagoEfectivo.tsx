@@ -109,7 +109,7 @@ const PagoEfectivo: React.FC = () => {
     console.log('Datos de la orden:', orderData)
 
     try {
-      const response = await fetch('http://localhost:3000/api/orders', {
+      const response = await fetch('http://localhost:4000/api/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -195,7 +195,7 @@ const PagoEfectivo: React.FC = () => {
           </div>
 
           <div className="w-full px-4 lg:w-1/3">
-            <div className="rounded bg-white p-6 shadow-md">
+            <div className="rounded bg-[#F5F7FF] p-6 shadow-md">
               <h2 className="mb-4 text-xl font-bold">Resumen del pedido</h2>
               <ul className="mb-4">
                 {productos.map((producto, index) => (
