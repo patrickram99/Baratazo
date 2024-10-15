@@ -6,6 +6,7 @@ import ProductosNuevos from './components/ProductosNuevos'
 import CarritoCompras from './components/CarritoCompras'
 import ConfirmacionDatos from './components/ConfirmacionDatos'
 import AgregarMetodoPago from './components/AgregarMetodoPago'
+import OrdenConfirmada from './components/OrdenConfirmada' // Importamos el nuevo componente
 import PagoEfectivo from './components/PagoEfectivo' // Asegúrate de importar el componente
 import Footer from './components/Footer'
 import './App.css'
@@ -62,6 +63,14 @@ const App: React.FC = () => {
               element={
                 <div className="rounded-lg bg-white p-4">
                   <PagoEfectivo />
+                </div>
+              }
+            />
+            <Route
+              path="/orden-confirmada"
+              element={
+                <div className="rounded-lg bg-white p-4">
+                  <OrdenConfirmada />
                 </div>
               }
             />

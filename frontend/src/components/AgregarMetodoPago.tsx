@@ -68,6 +68,7 @@ const AgregarMetodoPago: React.FC = () => {
       pais: string
       estado: string
       direccion: string
+      direccion2: string
       ciudad: string
       codigoPostal: string
       referencia: string
@@ -116,7 +117,7 @@ const AgregarMetodoPago: React.FC = () => {
       shippingAddress: {
         country: formData.pais,
         addressLine1: formData.direccion,
-        addressLine2: formData.referencia || '',
+        addressLine2: formData.direccion2,
         state: formData.estado,
         city: formData.ciudad,
         postalCode: formData.codigoPostal,
@@ -132,7 +133,7 @@ const AgregarMetodoPago: React.FC = () => {
     console.log('Datos de la orden:', orderData)
 
     try {
-      const response = await fetch('http://localhost:3000/api/orders', {
+      const response = await fetch('http://localhost:4000/api/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

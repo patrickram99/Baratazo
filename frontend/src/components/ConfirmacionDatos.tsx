@@ -64,6 +64,7 @@ const ConfirmacionDatos: React.FC = () => {
     pais: '',
     estado: '',
     direccion: '',
+    direccion2: '',
     ciudad: '',
     codigoPostal: '',
     referencia: '',
@@ -87,6 +88,7 @@ const ConfirmacionDatos: React.FC = () => {
       'pais',
       'estado',
       'direccion',
+      'direccion2',
       'ciudad',
       'codigoPostal',
     ]
@@ -297,6 +299,18 @@ const ConfirmacionDatos: React.FC = () => {
               </div>
             </div>
 
+            {/* Añadir recuadro adicional sin título */}
+            <div className="mx-2 mb-6 flex flex-wrap">
+              <div className="mb-4 w-full px-2 md:w-1/2">
+                <input
+                  type="text"
+                  id="direccion2"
+                  className="w-full rounded border border-gray-300 p-2"
+                  value={formData.direccion2}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
             <div className="-mx-2 mb-6 flex flex-wrap">
               <div className="mb-4 w-full px-2 md:mb-0 md:w-1/2">
                 <label htmlFor="codigo-postal" className="mb-2 block font-semibold">
