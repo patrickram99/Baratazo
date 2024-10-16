@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLocation, Navigate } from 'react-router-dom'
+import { useLocation, useNavigate, Navigate } from 'react-router-dom'
 
 interface Producto {
   imagen: string
@@ -81,6 +81,7 @@ const OrderProgress: React.FC<{ steps: { label: string; isCompleted: boolean }[]
 
 const OrdenConfirmada: React.FC = () => {
   const location = useLocation()
+  const navigate = useNavigate()
   const state = location.state as LocationState
 
   if (!state || !state.orderResponse || !state.productos || !state.formData) {
@@ -100,6 +101,9 @@ const OrdenConfirmada: React.FC = () => {
     { label: 'Confirmación', isCompleted: true },
     { label: 'Entrega', isCompleted: false },
   ]
+  const handlevolver = () => {
+    navigate('/')
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -150,7 +154,10 @@ const OrdenConfirmada: React.FC = () => {
               <button className="rounded-full bg-[#1A6DAF] px-4 py-2 font-medium text-white transition-colors hover:bg-blue-700">
                 Ver seguimiento
               </button>
-              <button className="rounded-full bg-yellow-400 px-6 py-2 font-medium text-white transition-colors hover:bg-yellow-500">
+              <button
+                onClick={handlevolver}
+                className="rounded-full bg-yellow-400 px-6 py-2 font-medium text-white transition-colors hover:bg-yellow-500"
+              >
                 Seguir comprando
               </button>
             </div>
