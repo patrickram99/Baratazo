@@ -131,7 +131,7 @@ const AgregarMetodoPago: React.FC = () => {
     }
     // Imprimir el JSON en consola
     console.log('Datos de la orden:', orderData)
-
+    /*
     try {
       const response = await fetch('http://localhost:4000/api/orders', {
         method: 'POST',
@@ -146,22 +146,73 @@ const AgregarMetodoPago: React.FC = () => {
       }
 
       const data = await response.json()
+      console.log('Respuesta de la API:', data)
 
-      navigate('/order-confirmation', {
-        state: {
-          orderResponse: data,
-          productos,
-          totalFinal,
+      const navigationState = {
+        orderResponse: {
+          order: {
+            orderNumber: data.id.toString(), // Usamos el id como número de orden
+            createdAt: data.createdAt,
+            estimatedDeliveryDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // Estimamos 7 días para la entrega
+            status: data.status,
+            paymentMethod: data.paymentMethod,
+            paymentStatus: data.paymentStatus,
+            totalAmount: data.totalAmount
+          },
+          shippingAddress: data.shippingAddress,
         },
-      })
+        productos: productos,
+      }
+      console.log('Estado de navegación:', navigationState)
 
-      setCardNumber('')
-      setExpiryDate('')
-      setCvv('')
+      navigate('/orden-confirmada', {
+        state: {
+          orderResponse: {
+            order: {
+              orderNumber: data.id.toString(),
+              createdAt: data.createdAt,
+              estimatedDeliveryDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+            }
+          },
+          productos: productos,
+          formData: formData,
+          totalFinal: totalFinal
+        }
+      })
     } catch (error) {
       console.error('Error en la solicitud:', error)
       alert('Hubo un problema al procesar su pago. Inténtelo nuevamente.')
     }
+  }*/
+    const mockServerResponse = {
+      id: Math.floor(Math.random() * 1000000).toString(),
+      createdAt: new Date().toISOString(),
+      status: 'CONFIRMED',
+      paymentStatus: 'PAID',
+      ...orderData,
+    }
+
+    console.log('Datos de la orden:', mockServerResponse)
+
+    const navigationState = {
+      orderResponse: {
+        order: {
+          orderNumber: mockServerResponse.id,
+          createdAt: mockServerResponse.createdAt,
+          estimatedDeliveryDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+          status: mockServerResponse.status,
+          paymentMethod: mockServerResponse.paymentMethod,
+          paymentStatus: mockServerResponse.paymentStatus,
+          totalAmount: mockServerResponse.totalAmount,
+        },
+        shippingAddress: mockServerResponse.shippingAddress,
+      },
+      productos: productos,
+      formData: formData,
+      totalFinal: totalFinal,
+    }
+
+    navigate('/orden-confirmada', { state: navigationState })
   }
   const orderSteps = [
     { label: 'Carrito', isCompleted: true },
