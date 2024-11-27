@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 interface Producto {
@@ -8,6 +8,7 @@ interface Producto {
   precio: string
   cantidad?: number
 }
+
 const OrderProgress: React.FC<{ steps: { label: string; isCompleted: boolean }[] }> = ({
   steps,
 }) => {
@@ -60,7 +61,7 @@ const ConfirmacionDatos: React.FC = () => {
       total + parseFloat(producto.precio.replace('S/ ', '')) * (producto.cantidad || 1),
     0
   )
-  const tarifaEnvio = 21.0 // Asumiendo un costo fijo de envío
+  const tarifaEnvio = 21.0
   const envio = opcionEnvio === 'recoger' ? 'S/ 0.00' : `S/ ${tarifaEnvio.toFixed(2)}`
 
   const [usarDatosCuenta, setUsarDatosCuenta] = useState(false)
@@ -77,47 +78,66 @@ const ConfirmacionDatos: React.FC = () => {
     codigoPostal: '',
     referencia: '',
   })
-  const [showErrorMessage, setShowErrorMessage] = useState(false)
+  const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target
+    setFormData(prev => ({ ...prev, [id]: value }))
+    validateField(id, value)
+  }
 
-    let isValid = true
+  const validateField = (id: string, value: string) => {
+    let error = ''
     switch (id) {
       case 'email':
-        isValid = value.includes('@')
+        if (!value.includes('@')) {
+          error = 'Email inválido'
+        }
         break
       case 'nombre':
-        isValid = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]*$/.test(value)
+        if (/\d/.test(value)) {
+          error = 'Nombre inválido'
+        }
         break
-
       case 'apellido':
-        isValid = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]*$/.test(value)
+        if (/\d/.test(value)) {
+          error = 'Apellido inválido'
+        }
         break
       case 'telefono':
-        isValid = /^[0-9]*$/.test(value)
+        if (!/^\d+$/.test(value)) {
+          error = 'Teléfono inválido'
+        }
         break
-
+      case 'pais':
+        if (!value) {
+          error = 'Seleccione un país'
+        }
+        break
       case 'estado':
-      case 'ciudad':
-        isValid = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$/.test(value)
+        if (/\d/.test(value)) {
+          error = 'Estado inválido'
+        }
         break
       case 'direccion':
-        isValid = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ0-9\s,]+$/.test(value)
+        if (/[^a-zA-Z0-9\s,.]/.test(value)) {
+          error = 'Dirección inválida'
+        }
+        break
+      case 'ciudad':
+        if (/\d/.test(value)) {
+          error = 'Ciudad inválida'
+        }
         break
       case 'codigoPostal':
-        isValid = /^[0-9]+$/.test(value)
-        break
-      case 'referencia':
-        isValid = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ0-9\s,]+$/.test(value)
+        if (!/^\d+$/.test(value)) {
+          error = 'Código postal inválido'
+        }
         break
       default:
         break
     }
-
-    if (isValid) {
-      setFormData(prev => ({ ...prev, [id]: value }))
-    }
+    setErrors(prev => ({ ...prev, [id]: error }))
   }
 
   const validateForm = () => {
@@ -129,12 +149,27 @@ const ConfirmacionDatos: React.FC = () => {
       'pais',
       'estado',
       'direccion',
-      'direccion2',
       'ciudad',
       'codigoPostal',
     ]
-    const isValid = requiredFields.every(field => formData[field as keyof typeof formData])
-    setShowErrorMessage(!isValid)
+    let isValid = true
+    const newErrors: { [key: string]: string } = {}
+
+    requiredFields.forEach(field => {
+      const value = formData[field as keyof typeof formData]
+      if (!value) {
+        newErrors[field] = '¡Debes de rellenar estos campos primero!'
+        isValid = false
+      } else {
+        validateField(field, value)
+        if (errors[field]) {
+          newErrors[field] = errors[field]
+          isValid = false
+        }
+      }
+    })
+
+    setErrors(newErrors)
     return isValid
   }
 
@@ -149,16 +184,13 @@ const ConfirmacionDatos: React.FC = () => {
   ]
 
   const handleAgregarMetodoPago = () => {
-    // Validar el formulario
     if (validateForm()) {
-      const redirectPath = '/agregar-metodo-pago' // Redirigir siempre a la página de agregar método de pago
-
+      const redirectPath = '/agregar-metodo-pago'
       navigate(redirectPath, {
         state: {
           productos,
           totalFinal,
           formData,
-
           orderSteps: [
             { label: 'Carrito', isCompleted: true },
             { label: 'Confirmación de Pago', isCompleted: true },
@@ -166,8 +198,6 @@ const ConfirmacionDatos: React.FC = () => {
           ],
         },
       })
-    } else {
-      setShowErrorMessage(true)
     }
   }
 
@@ -175,14 +205,6 @@ const ConfirmacionDatos: React.FC = () => {
     navigate(-1)
   }
 
-  useEffect(() => {
-    if (showErrorMessage) {
-      const timer = setTimeout(() => {
-        setShowErrorMessage(false)
-      }, 3000)
-      return () => clearTimeout(timer)
-    }
-  }, [showErrorMessage])
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-6xl">
@@ -198,12 +220,6 @@ const ConfirmacionDatos: React.FC = () => {
 
         <div className="-mx-4 flex flex-wrap">
           <form className="mb-8 w-full lg:w-2/3">
-            {showErrorMessage && (
-              <div className="mb-4 rounded bg-red-100 p-4 text-red-700">
-                ¡Debes de rellenar estos campos primero!
-              </div>
-            )}
-
             <label htmlFor="email" className="mb-2 block font-semibold">
               Dirección de correo electrónico *
             </label>
@@ -212,7 +228,9 @@ const ConfirmacionDatos: React.FC = () => {
                 type="email"
                 id="email"
                 required
-                className="w-1/2 rounded border border-gray-300 p-2"
+                className={`w-1/2 rounded border ${
+                  errors.email ? 'border-red-500' : 'border-gray-300'
+                } p-2`}
                 value={formData.email}
                 onChange={handleInputChange}
               />
@@ -229,6 +247,7 @@ const ConfirmacionDatos: React.FC = () => {
                 </label>
               </div>
             </div>
+            {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
 
             <div className="-mx-2 mb-6 flex flex-wrap">
               <div className="mb-4 w-full px-2 md:mb-0 md:w-1/2">
@@ -239,10 +258,13 @@ const ConfirmacionDatos: React.FC = () => {
                   type="text"
                   id="nombre"
                   required
-                  className="w-full rounded border border-gray-300 p-2"
+                  className={`w-full rounded border ${
+                    errors.nombre ? 'border-red-500' : 'border-gray-300'
+                  } p-2`}
                   value={formData.nombre}
                   onChange={handleInputChange}
                 />
+                {errors.nombre && <p className="mt-1 text-sm text-red-500">{errors.nombre}</p>}
               </div>
 
               <div className="w-full px-2 md:w-1/2">
@@ -253,10 +275,13 @@ const ConfirmacionDatos: React.FC = () => {
                   type="text"
                   id="apellido"
                   required
-                  className="w-full rounded border border-gray-300 p-2"
+                  className={`w-full rounded border ${
+                    errors.apellido ? 'border-red-500' : 'border-gray-300'
+                  } p-2`}
                   value={formData.apellido}
                   onChange={handleInputChange}
                 />
+                {errors.apellido && <p className="mt-1 text-sm text-red-500">{errors.apellido}</p>}
               </div>
             </div>
 
@@ -268,10 +293,13 @@ const ConfirmacionDatos: React.FC = () => {
                 type="tel"
                 id="telefono"
                 required
-                className="w-1/2 rounded border border-gray-300 p-2"
+                className={`w-1/2 rounded border ${
+                  errors.telefono ? 'border-red-500' : 'border-gray-300'
+                } p-2`}
                 value={formData.telefono}
                 onChange={handleInputChange}
               />
+              {errors.telefono && <p className="mt-1 text-sm text-red-500">{errors.telefono}</p>}
             </div>
 
             <div className="-mx-2 mb-6 flex flex-wrap">
@@ -282,13 +310,16 @@ const ConfirmacionDatos: React.FC = () => {
                 <select
                   id="pais"
                   required
-                  className="w-full rounded border border-gray-300 p-2"
+                  className={`w-full rounded border ${
+                    errors.pais ? 'border-red-500' : 'border-gray-300'
+                  } p-2`}
                   value={formData.pais}
                   onChange={handleInputChange}
                 >
                   <option value="">Seleccione un país</option>
                   <option value="peru">Perú</option>
                 </select>
+                {errors.pais && <p className="mt-1 text-sm text-red-500">{errors.pais}</p>}
               </div>
               <div className="w-full px-2 md:w-1/2">
                 <label htmlFor="estado" className="mb-2 block font-semibold">
@@ -298,10 +329,13 @@ const ConfirmacionDatos: React.FC = () => {
                   type="text"
                   id="estado"
                   required
-                  className="w-full rounded border border-gray-300 p-2"
+                  className={`w-full rounded border ${
+                    errors.estado ? 'border-red-500' : 'border-gray-300'
+                  } p-2`}
                   value={formData.estado}
                   onChange={handleInputChange}
                 />
+                {errors.estado && <p className="mt-1 text-sm text-red-500">{errors.estado}</p>}
               </div>
             </div>
 
@@ -314,10 +348,15 @@ const ConfirmacionDatos: React.FC = () => {
                   type="text"
                   id="direccion"
                   required
-                  className="w-full rounded border border-gray-300 p-2"
+                  className={`w-full rounded border ${
+                    errors.direccion ? 'border-red-500' : 'border-gray-300'
+                  } p-2`}
                   value={formData.direccion}
                   onChange={handleInputChange}
                 />
+                {errors.direccion && (
+                  <p className="mt-1 text-sm text-red-500">{errors.direccion}</p>
+                )}
               </div>
               <div className="w-full px-2 md:w-1/2">
                 <label htmlFor="ciudad" className="mb-2 block font-semibold">
@@ -327,10 +366,13 @@ const ConfirmacionDatos: React.FC = () => {
                   type="text"
                   id="ciudad"
                   required
-                  className="w-full rounded border border-gray-300 p-2"
+                  className={`w-full rounded border ${
+                    errors.ciudad ? 'border-red-500' : 'border-gray-300'
+                  } p-2`}
                   value={formData.ciudad}
                   onChange={handleInputChange}
                 />
+                {errors.ciudad && <p className="mt-1 text-sm text-red-500">{errors.ciudad}</p>}
               </div>
             </div>
 
@@ -355,10 +397,15 @@ const ConfirmacionDatos: React.FC = () => {
                   type="text"
                   id="codigoPostal"
                   required
-                  className="w-full rounded border border-gray-300 p-2"
+                  className={`w-full rounded border ${
+                    errors.codigoPostal ? 'border-red-500' : 'border-gray-300'
+                  } p-2`}
                   value={formData.codigoPostal}
                   onChange={handleInputChange}
                 />
+                {errors.codigoPostal && (
+                  <p className="mt-1 text-sm text-red-500">{errors.codigoPostal}</p>
+                )}
               </div>
               <div className="w-full px-2 md:w-1/2">
                 <label htmlFor="referencia" className="mb-2 block font-semibold">
@@ -368,6 +415,8 @@ const ConfirmacionDatos: React.FC = () => {
                   type="text"
                   id="referencia"
                   className="w-full rounded border border-gray-300 p-2"
+                  value={formData.referencia}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -377,11 +426,11 @@ const ConfirmacionDatos: React.FC = () => {
                 type="button"
                 onClick={handleAgregarMetodoPago}
                 className={`mr-4 rounded-full px-6 py-2 text-white transition duration-300 ${
-                  showErrorMessage
+                  Object.keys(errors).length > 0
                     ? 'cursor-not-allowed bg-gray-400'
                     : 'bg-[#1A6DAF] hover:bg-blue-600'
                 }`}
-                disabled={showErrorMessage}
+                disabled={Object.keys(errors).length > 0}
               >
                 Agregar método de pago
               </button>
@@ -425,7 +474,6 @@ const ConfirmacionDatos: React.FC = () => {
               ) : (
                 <p>No hay productos en el carrito.</p>
               )}
-              {/* Aquí agregas el bloque de subtotal, envío y total */}
               <div className="border-t pt-4">
                 <p className="flex justify-between">
                   <span className="font-semibold">Subtotal</span>
