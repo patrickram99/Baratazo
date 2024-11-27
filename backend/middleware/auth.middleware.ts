@@ -13,6 +13,17 @@ export const authMiddleware = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
+  // Verificar si la autenticación está deshabilitada
+  const isAuthDisabled = process.env.DISABLE_AUTH === 'true'
+
+  if (isAuthDisabled) {
+    console.log('⚠️ Advertencia: Autenticación deshabilitada en modo desarrollo')
+    // Establecer un usuario ficticio para desarrollo
+    req.user = { id: 0, email: 'dev@example.com' }
+    next()
+    return
+  }
+
   try {
     const token = req.header('Authorization')?.replace('Bearer ', '')
 
