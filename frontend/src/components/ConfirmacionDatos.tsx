@@ -50,12 +50,20 @@ const OrderProgress: React.FC<{ steps: { label: string; isCompleted: boolean }[]
 const ConfirmacionDatos: React.FC = () => {
   const location = useLocation()
   const navigate = useNavigate()
-  const { productos, totalFinal } = location.state as {
+  const { productos, opcionEnvio, totalFinal } = location.state as {
     productos: Producto[]
+    opcionEnvio: string
     totalFinal: number
   }
+  const totalCarrito = productos.reduce(
+    (total, producto) =>
+      total + parseFloat(producto.precio.replace('S/ ', '')) * (producto.cantidad || 1),
+    0
+  )
+  const tarifaEnvio = 21.0 // Asumiendo un costo fijo de envío
+  const envio = opcionEnvio === 'recoger' ? 'S/ 0.00' : `S/ ${tarifaEnvio.toFixed(2)}`
+
   const [usarDatosCuenta, setUsarDatosCuenta] = useState(false)
-  const [paymentMethod, setPaymentMethod] = useState<string>('')
   const [formData, setFormData] = useState({
     email: '',
     nombre: '',
@@ -73,10 +81,43 @@ const ConfirmacionDatos: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target
-    setFormData(prevData => ({
-      ...prevData,
-      [id]: value,
-    }))
+
+    let isValid = true
+    switch (id) {
+      case 'email':
+        isValid = value.includes('@')
+        break
+      case 'nombre':
+        isValid = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]*$/.test(value)
+        break
+
+      case 'apellido':
+        isValid = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]*$/.test(value)
+        break
+      case 'telefono':
+        isValid = /^[0-9]*$/.test(value)
+        break
+
+      case 'estado':
+      case 'ciudad':
+        isValid = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$/.test(value)
+        break
+      case 'direccion':
+        isValid = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ0-9\s,]+$/.test(value)
+        break
+      case 'codigoPostal':
+        isValid = /^[0-9]+$/.test(value)
+        break
+      case 'referencia':
+        isValid = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ0-9\s,]+$/.test(value)
+        break
+      default:
+        break
+    }
+
+    if (isValid) {
+      setFormData(prev => ({ ...prev, [id]: value }))
+    }
   }
 
   const validateForm = () => {
@@ -108,20 +149,16 @@ const ConfirmacionDatos: React.FC = () => {
   ]
 
   const handleAgregarMetodoPago = () => {
-    if (!paymentMethod) {
-      setShowErrorMessage(true) // Mostrar mensaje si no se ha seleccionado método de pago
-      return
-    }
-
+    // Validar el formulario
     if (validateForm()) {
-      const redirectPath = paymentMethod === 'cash' ? '/pago-Efectivo' : '/agregar-metodo-pago'
+      const redirectPath = '/agregar-metodo-pago' // Redirigir siempre a la página de agregar método de pago
 
       navigate(redirectPath, {
         state: {
           productos,
           totalFinal,
           formData,
-          paymentMethod,
+
           orderSteps: [
             { label: 'Carrito', isCompleted: true },
             { label: 'Confirmación de Pago', isCompleted: true },
@@ -251,8 +288,6 @@ const ConfirmacionDatos: React.FC = () => {
                 >
                   <option value="">Seleccione un país</option>
                   <option value="peru">Perú</option>
-                  <option value="argentina">Argentina</option>
-                  <option value="chile">Chile</option>
                 </select>
               </div>
               <div className="w-full px-2 md:w-1/2">
@@ -390,39 +425,21 @@ const ConfirmacionDatos: React.FC = () => {
               ) : (
                 <p>No hay productos en el carrito.</p>
               )}
-              <div className="flex justify-between border-t pt-4">
-                <span className="font-bold">Total del pedido:</span>
-                <span className="font-bold">S/. {totalFinal.toFixed(2)}</span>
+              {/* Aquí agregas el bloque de subtotal, envío y total */}
+              <div className="border-t pt-4">
+                <p className="flex justify-between">
+                  <span className="font-semibold">Subtotal</span>
+                  <span>{`S/ ${totalCarrito.toFixed(2)}`}</span>
+                </p>
+                <p className="flex justify-between">
+                  <span className="font-semibold">Envío</span>
+                  <span>{envio}</span>
+                </p>
+                <p className="mt-4 flex justify-between border-t pt-4 text-lg font-semibold">
+                  <span className="font-bold">Total del pedido:</span>
+                  <span>{`S/ ${totalFinal.toFixed(2)}`}</span>
+                </p>
               </div>
-            </div>
-
-            <div className="rounded bg-white p-6 shadow-md">
-              <h3 className="mb-2 font-bold">Método de pago</h3>
-              <div className="space-y-2">
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    name="paymentMethod"
-                    value="card"
-                    checked={paymentMethod === 'card'}
-                    onChange={() => setPaymentMethod('card')}
-                    className="mr-2"
-                  />
-                  Tarjeta débito/crédito
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    name="paymentMethod"
-                    value="cash"
-                    checked={paymentMethod === 'cash'}
-                    onChange={() => setPaymentMethod('cash')}
-                    className="mr-2"
-                  />
-                  Pago efectivo
-                </label>
-              </div>
-              {!paymentMethod && <p className="mt-2 text-red-500">Seleccione su método de pago</p>}
             </div>
           </div>
         </div>

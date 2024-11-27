@@ -50,29 +50,19 @@ const OrderProgress: React.FC<{ steps: { label: string; isCompleted: boolean }[]
 
 const CarritoCompras: React.FC = () => {
   const navigate = useNavigate()
-  const [productos, setProductos] = useState<Producto[]>([
-    {
-      imagen: '/img/gabinete1.jpg',
-      nombre: 'Gabinete Gaming',
-      descripcion: 'Case con iluminación RGB.',
-      precio: 'S/ 99.00',
-      cantidad: 1,
-    },
-    {
-      imagen: '/img/auriculares1.jpg',
-      nombre: 'Auriculares Gaming',
-      descripcion: 'Auriculares con micrófono.',
-      precio: 'S/ 89.90',
-      cantidad: 1,
-    },
-  ])
-
+  const [productos, setProductos] = useState<Producto[]>([])
   const [totalCarrito, setTotalCarrito] = useState<number>(0)
   const [tarifaEnvio, setTarifaEnvio] = useState<number>(21.0) // Tarifa de envío inicial
-  const [opcionEnvio, setOpcionEnvio] = useState<string>('tarifa') // Opción de envío seleccionada
-  const [codigoDescuento, setCodigoDescuento] = useState<string>('')
-  const [mostrarEnvio, setMostrarEnvio] = useState<boolean>(false)
-  const [mostrarDescuento, setMostrarDescuento] = useState<boolean>(false)
+  const [opcionEnvio, setOpcionEnvio] = useState<string>('tarifa') // o 'tarifa' por defecto
+  const [mostrarEnvio, setMostrarEnvio] = useState<boolean>(false) // Controlar la visibilidad de la sección de envío
+
+  // Cargar el carrito desde localStorage al montar el componente
+  useEffect(() => {
+    const carritoGuardado = JSON.parse(localStorage.getItem('carrito') || '[]') as Producto[]
+    setProductos(carritoGuardado)
+    calcularTotal(carritoGuardado)
+  }, [])
+
   const calcularTotal = useCallback(
     (carrito: Producto[]) => {
       const total = carrito.reduce((acc, producto) => {
@@ -96,12 +86,14 @@ const CarritoCompras: React.FC = () => {
     const carrito = [...productos]
     carrito[index].cantidad = parseInt(nuevaCantidad)
     setProductos(carrito)
+    localStorage.setItem('carrito', JSON.stringify(carrito)) // Sincronizar con localStorage
     calcularTotal(carrito)
   }
 
   const eliminarProducto = (index: number) => {
     const carrito = productos.filter((_, i) => i !== index)
     setProductos(carrito)
+    localStorage.setItem('carrito', JSON.stringify(carrito)) // Sincronizar con localStorage
     calcularTotal(carrito)
   }
 
@@ -111,6 +103,7 @@ const CarritoCompras: React.FC = () => {
 
   const borrarCarrito = () => {
     setProductos([])
+    localStorage.removeItem('carrito') // Limpiar el carrito del localStorage
     setTotalCarrito(0)
   }
 
@@ -120,11 +113,12 @@ const CarritoCompras: React.FC = () => {
       cantidad: producto.cantidad || 1,
     }))
 
-    const totalFinal = totalCarrito + tarifaEnvio + 18
+    const totalFinal = totalCarrito + tarifaEnvio
 
     navigate('/confirmacion', {
       state: {
         productos: productosConCantidades,
+        opcionEnvio, // Se pasa correctamente la opción de envío seleccionada
         totalFinal: totalFinal,
       },
     })
@@ -146,7 +140,6 @@ const CarritoCompras: React.FC = () => {
 
         <div className="mb-8 flex items-center justify-between">
           <h1 className="text-3xl font-bold">Carrito de la compra</h1>
-
           <OrderProgress steps={orderSteps} />
         </div>
 
@@ -173,7 +166,7 @@ const CarritoCompras: React.FC = () => {
                 ) : (
                   productos.map((producto, index) => {
                     const precio = parseFloat(producto.precio.replace('S/ ', '').replace(',', '.'))
-                    const precioTotal = precio * (producto.cantidad || 1) // Aplicar descuento de 8 soles
+                    const precioTotal = precio * (producto.cantidad || 1)
                     return (
                       <tr key={index} className="border-b">
                         <td className="px-2 py-4">
@@ -244,7 +237,7 @@ const CarritoCompras: React.FC = () => {
                 className="flex cursor-pointer items-center justify-between font-medium"
                 onClick={() => setMostrarEnvio(!mostrarEnvio)}
               >
-                Estimar envío e impuestos
+                Estimar envío
                 <span className="text-xs text-gray-500">▼</span>
               </p>
               <p className="text-sm text-gray-500">
@@ -259,21 +252,18 @@ const CarritoCompras: React.FC = () => {
                     <option>Perú</option>
                     <option>Argentina</option>
                   </select>
-
-                  <label className="mb-2 mt-4 block font-medium">Estado/Provincia</label>
+                  <label className="mb-2 mt-4 block font-medium">Estado / Provincia</label>
                   <input
                     type="text"
                     className="w-full rounded border p-2"
-                    placeholder="Australia"
+                    placeholder="Ingrese su estado/provincia"
                   />
-
-                  <label className="mb-2 mt-4 block font-medium">Código Postal</label>
+                  <label className="mb-2 mt-4 block font-medium">Código postal</label>
                   <input
                     type="text"
                     className="w-full rounded border p-2"
-                    placeholder="Australia"
+                    placeholder="Ingrese código postal"
                   />
-
                   <div className="mt-4">
                     <label className="flex items-center">
                       <input
@@ -310,62 +300,29 @@ const CarritoCompras: React.FC = () => {
               )}
             </div>
 
-            <div className="mb-4">
-              <p
-                className="flex cursor-pointer items-center justify-between font-medium"
-                onClick={() => setMostrarDescuento(!mostrarDescuento)}
-              >
-                Aplicar código de descuento
-                <span className="text-xs text-gray-500">▼</span>
+            <div className="border-t pt-4">
+              <p className="flex justify-between">
+                <span className="font-semibold">Subtotal</span>
+                <span>{`S/ ${totalCarrito.toFixed(2)}`}</span>
               </p>
-              {mostrarDescuento && (
-                <div className="mt-4">
-                  <input
-                    type="text"
-                    value={codigoDescuento}
-                    onChange={e => setCodigoDescuento(e.target.value)}
-                    placeholder="Ingrese su código"
-                    className="w-full rounded border p-2"
-                  />
-                  <button
-                    type="button"
-                    /* onClick={() => /*alert('Código aplicado!')}*/
-                    className="mt-2 w-full rounded-full bg-[#1A6DAF] p-2 text-white hover:bg-blue-600"
-                  >
-                    Aplicar
-                  </button>
-                </div>
-              )}
+              <p className="flex justify-between">
+                <span className="font-semibold">Envío</span>
+                <span>
+                  {opcionEnvio === 'recoger' ? 'S/ 0.00' : `S/ ${tarifaEnvio.toFixed(2)}`}
+                </span>
+              </p>
+              <p className="mt-4 flex justify-between border-t pt-4 text-lg font-semibold">
+                <span>Total</span>
+                <span>{`S/ ${(totalCarrito + tarifaEnvio).toFixed(2)}`}</span>
+              </p>
             </div>
 
-            <div className="mb-2 flex justify-between border-b pb-2">
-              <span className="text-gray-700">Subtotal:</span>
-              <span className="font-semibold">{`S/ ${totalCarrito.toFixed(2)}`}</span>
-            </div>
-            <div className="mb-2 flex justify-between border-b pb-2">
-              <span className="text-gray-700">Envío:</span>
-              <span className="font-semibold">{`S/ ${tarifaEnvio.toFixed(2)}`}</span>
-            </div>
-
-            <div className="mb-2 flex justify-between border-b pb-2">
-              <span className="text-gray-700">IGV:</span>
-              <span className="font-semibold">{`S/ 18.00`}</span> {/* IGV está fijo en 18 soles */}
-            </div>
-
-            <div className="flex justify-between border-t pt-4 text-lg font-semibold">
-              <span>Total</span>
-              <span>{`S/ ${(totalCarrito + tarifaEnvio + 18).toFixed(2)}`}</span>{' '}
-              {/* Incluye IGV en el total */}
-            </div>
-
-            <div className="mt-4">
-              <button
-                onClick={comprar}
-                className="w-full rounded-full bg-[#1A6DAF] px-6 py-2 text-white transition duration-300 hover:bg-blue-600"
-              >
-                Comprar
-              </button>
-            </div>
+            <button
+              onClick={comprar}
+              className="mt-6 w-full rounded-full bg-[#1A6DAF] px-6 py-2 text-white transition duration-300 hover:bg-blue-600"
+            >
+              Realizar compra
+            </button>
           </div>
         </div>
       </main>
