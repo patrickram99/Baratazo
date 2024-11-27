@@ -124,6 +124,42 @@ const createOrder: RequestHandler<Record<string, never>, unknown, OrderRequestBo
   }
 }
 
+const getOrderById: RequestHandler<{ id: string }> = async (req, res) => {
+  try {
+    const orderId = parseInt(req.params.id)
+
+    if (isNaN(orderId)) {
+      res.status(400).json({ error: 'Invalid order ID' })
+      return
+    }
+
+    const order = await prisma.order.findUnique({
+      where: { id: orderId },
+      include: {
+        orderItems: {
+          include: {
+            product: true,
+          },
+        },
+        shippingAddress: true,
+        paymentInfo: true,
+      },
+    })
+
+    if (!order) {
+      res.status(404).json({ error: 'Order not found' })
+      return
+    }
+
+    res.json(order)
+  } catch (error) {
+    console.error('Error fetching order:', error)
+    res.status(500).json({ error: 'Error fetching order details' })
+  }
+}
+
+router.get('/orders/:id', getOrderById)
+
 router.post('/orders', createOrder)
 
 export default router
