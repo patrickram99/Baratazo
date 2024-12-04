@@ -38,7 +38,6 @@
 
 /*Confirmación de datos boton "Usar datos predefinidos de la cuenta" */
 input[type="checkbox"] {
-  -webkit-appearance: none; /* Elimina el estilo por defecto */
   width: 24px; /* Ajusta el tamaño */
   height: 24px;
   border-radius: 50%; /* Hace que sea circular */
