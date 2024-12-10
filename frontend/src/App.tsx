@@ -9,7 +9,9 @@ import AgregarMetodoPago from './components/AgregarMetodoPago'
 import OrdenConfirmada from './components/OrdenConfirmada'
 import PagoEfectivo from './components/PagoEfectivo'
 import Footer from './components/Footer'
-import DatosProducto from './components/DatosProducto' // Importamos el componente
+import Login from './components/Login'
+import Register from './components/Register'
+import DatosProducto from './components/DatosProducto'
 import './App.css'
 
 const App: React.FC = () => {
@@ -78,6 +80,22 @@ const App: React.FC = () => {
               element={
                 <div className="rounded-lg bg-white p-4">
                   <OrdenConfirmada />
+                </div>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <div className="rounded-lg bg-white p-4">
+                  <Login />
+                </div>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <div className="rounded-lg bg-white p-4">
+                  <Register />
                 </div>
               }
             />
