@@ -6,9 +6,11 @@ import ProductosNuevos from './components/ProductosNuevos'
 import CarritoCompras from './components/CarritoCompras'
 import ConfirmacionDatos from './components/ConfirmacionDatos'
 import AgregarMetodoPago from './components/AgregarMetodoPago'
-import OrdenConfirmada from './components/OrdenConfirmada' // Importamos el nuevo componente
-import PagoEfectivo from './components/PagoEfectivo' // Asegúrate de importar el componente
+import OrdenConfirmada from './components/OrdenConfirmada'
+import PagoEfectivo from './components/PagoEfectivo'
 import Footer from './components/Footer'
+import Login from './components/Login'
+import Register from './components/Register'
 import './App.css'
 
 const App: React.FC = () => {
@@ -37,7 +39,6 @@ const App: React.FC = () => {
               path="/carrito"
               element={
                 <div className="p-6">
-                  {/* Eliminé la clase bg-white */}
                   <CarritoCompras />
                 </div>
               }
@@ -59,7 +60,7 @@ const App: React.FC = () => {
               }
             />
             <Route
-              path="/pago-Efectivo" // Añadí esta ruta para PagoEfectivo
+              path="/pago-Efectivo"
               element={
                 <div className="rounded-lg bg-white p-4">
                   <PagoEfectivo />
@@ -71,6 +72,22 @@ const App: React.FC = () => {
               element={
                 <div className="rounded-lg bg-white p-4">
                   <OrdenConfirmada />
+                </div>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <div className="rounded-lg bg-white p-4">
+                  <Login />
+                </div>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <div className="rounded-lg bg-white p-4">
+                  <Register />
                 </div>
               }
             />
