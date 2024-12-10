@@ -11,13 +11,13 @@ import PagoEfectivo from './components/PagoEfectivo'
 import Footer from './components/Footer'
 import Login from './components/Login'
 import Register from './components/Register'
+import DatosProducto from './components/DatosProducto'
 import './App.css'
 
 const App: React.FC = () => {
   return (
     <Router>
       <div className="flex min-h-screen flex-col bg-[#FFFFFF]">
-        {/* Cambié el color de fondo */}
         <MainNavigation />
         <main className="container mx-auto flex-grow px-4 py-8">
           <Routes>
@@ -32,6 +32,14 @@ const App: React.FC = () => {
                     <h2 className="mb-4 text-2xl font-bold">Productos Nuevos</h2>
                     <ProductosNuevos />
                   </section>
+                </div>
+              }
+            />
+            <Route
+              path="/producto/:nombre"
+              element={
+                <div className="p-6">
+                  <DatosProducto />
                 </div>
               }
             />
