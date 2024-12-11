@@ -34,6 +34,7 @@ const MainNavigation: React.FC<MainNavigationProps> = ({ isLoggedIn, onLogout })
     { name: 'Periféricos', path: '#' },
     { name: 'Subasta', path: '#' },
     { name: 'Promociones', path: '#' },
+    { name: 'Seguimiento de Pedido', path: '/buscarseguimiento' },
     // { name: 'Dashboard', path: '/dashboard' },
   ]
 
@@ -115,9 +116,6 @@ const MainNavigation: React.FC<MainNavigationProps> = ({ isLoggedIn, onLogout })
               <Link to="/carrito" className="p-2 text-black hover:text-gray-700">
                 <i className="fas fa-shopping-cart"></i>
               </Link>
-              <button className="p-2 text-black hover:text-gray-700">
-                <i className="fas fa-user"></i>
-              </button>
             </div>
             <div className="-mr-2 flex md:hidden">
               <button
@@ -209,9 +207,6 @@ const MainNavigation: React.FC<MainNavigationProps> = ({ isLoggedIn, onLogout })
                 >
                   <i className="fas fa-shopping-cart mr-2"></i> Carrito
                 </Link>
-                <button className="block w-full rounded-md px-3 py-2 text-left text-base font-medium text-black hover:bg-gray-100 hover:text-gray-700">
-                  <i className="fas fa-user mr-2"></i> Perfil
-                </button>
               </div>
             </div>
           </div>
