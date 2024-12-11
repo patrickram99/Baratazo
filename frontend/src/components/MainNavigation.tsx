@@ -68,13 +68,13 @@ const MainNavigation: React.FC = () => {
                 </Link>
               ))}
             </div>
-            <div className="hidden items-center space-x-4 md:flex">
+            <div className="hidden items-center space-x-1 md:flex">
               <button
                 onClick={WishList}
                 className="mb-2 rounded-full border border-[#1A6DAF] bg-transparent px-6 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100"
                 style={{ color: '#1A6DAF' }}
               >
-                WishList
+                Lista de Deseos
               </button>
 
               <button
@@ -82,7 +82,7 @@ const MainNavigation: React.FC = () => {
                 className="mb-2 rounded-full border border-[#FDCD11] bg-transparent px-6 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100"
                 style={{ color: '#FDCD11' }}
               >
-                CerrarSesion
+                Cerrar Sesion
               </button>
               <button className="p-2 text-black hover:text-gray-700">
                 <i className="fas fa-search"></i>
