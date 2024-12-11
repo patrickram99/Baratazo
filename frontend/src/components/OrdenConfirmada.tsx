@@ -19,7 +19,6 @@ interface FormData {
   direccion2: string
   ciudad: string
   codigoPostal: string
-  referencia: string
 }
 
 interface OrderData {
@@ -249,7 +248,6 @@ const OrdenConfirmada: React.FC = () => {
               </p>
               <p className="font-medium">Dirección: {orderResponse.shippingAddress.addressLine1}</p>
               <p>{orderResponse.shippingAddress.addressLine2}</p>
-              <p className="font-medium">Referencia: {orderResponse.shippingAddress.description}</p>
               <p className="font-medium">Teléfono: {formData.telefono}</p>
             </div>
             <div className="flex gap-4">
