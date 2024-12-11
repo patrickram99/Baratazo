@@ -27,6 +27,16 @@ const MainNavigation: React.FC<MainNavigationProps> = ({ isLoggedIn, onLogout })
     navigate('/wishlist') // Ajusta la ruta según tus necesidades
   }
 
+  const navigationItems = [
+    { name: 'Laptops', path: '#' },
+    { name: 'Desktop PCs', path: '#' },
+    { name: 'Componentes', path: '#' },
+    { name: 'Periféricos', path: '#' },
+    { name: 'Subasta', path: '#' },
+    { name: 'Promociones', path: '#' },
+    { name: 'Dashboard', path: '/dashboard' },
+  ]
+
   return (
     <header>
       {/* Header Section */}
@@ -60,21 +70,13 @@ const MainNavigation: React.FC<MainNavigationProps> = ({ isLoggedIn, onLogout })
               <img src="/img/logo.png" alt="Logo" className="h-8 w-auto" />
             </div>
             <div className="hidden items-center space-x-4 md:flex">
-              {[
-                'Laptops',
-                'Desktop PCs',
-                'Componentes',
-                'Periféricos',
-                'Subasta',
-                'Promociones',
-                'Reportes',
-              ].map(item => (
+              {navigationItems.map(item => (
                 <Link
-                  key={item}
-                  to="#"
+                  key={item.name}
+                  to={item.path}
                   className="rounded-md px-3 py-2 text-sm font-medium text-black hover:text-gray-700"
                 >
-                  {item}
+                  {item.name}
                 </Link>
               ))}
             </div>
@@ -162,21 +164,13 @@ const MainNavigation: React.FC<MainNavigationProps> = ({ isLoggedIn, onLogout })
         {isMenuOpen && (
           <div className="md:hidden">
             <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-              {[
-                'Laptops',
-                'Desktop PCs',
-                'Componentes',
-                'Periféricos',
-                'Subasta',
-                'Promociones',
-                'Reportes',
-              ].map(item => (
+              {navigationItems.map(item => (
                 <Link
-                  key={item}
-                  to="#"
+                  key={item.name}
+                  to={item.path}
                   className="block rounded-md px-3 py-2 text-base font-medium text-black hover:bg-gray-100"
                 >
-                  {item}
+                  {item.name}
                 </Link>
               ))}
             </div>

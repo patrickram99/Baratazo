@@ -10,8 +10,10 @@ import OrdenConfirmada from './components/OrdenConfirmada'
 import Footer from './components/Footer'
 import DatosProducto from './components/DatosProducto'
 import SeguimientoPedido from './components/SeguimientoPedido'
-import Login from './components/Login'
 import './App.css'
+import DashboardVentas from './components/DashboardVentas' // Dashboard para gráficos de ventas
+import Login from './components/Login'
+
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -90,6 +92,14 @@ const App: React.FC = () => {
               element={
                 <div className="rounded-lg bg-white p-4">
                   <SeguimientoPedido />
+                </div>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <div className="rounded-lg bg-white p-4">
+                  <DashboardVentas />
                 </div>
               }
             />
