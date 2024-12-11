@@ -10,6 +10,7 @@ import OrdenConfirmada from './components/OrdenConfirmada'
 import Footer from './components/Footer'
 import DatosProducto from './components/DatosProducto' // Importamos el componente
 import SeguimientoPedido from './components/SeguimientoPedido'
+import DashboardVentas from './components/DashboardVentas' // Dashboard para gráficos de ventas
 import './App.css'
 
 const App: React.FC = () => {
@@ -78,6 +79,14 @@ const App: React.FC = () => {
               element={
                 <div className="rounded-lg bg-white p-4">
                   <SeguimientoPedido />
+                </div>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <div className="rounded-lg bg-white p-4">
+                  <DashboardVentas />
                 </div>
               }
             />
