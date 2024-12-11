@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   BarChart,
   Bar,
@@ -15,7 +16,6 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 
-// Actualizada la interfaz OrderData para incluir email y otros campos necesarios
 interface OrderData {
   orderNumber: string
   orderDate: string
@@ -52,28 +52,34 @@ const DashboardVentas: React.FC = () => {
     productSales: [],
     statusDistribution: [],
   })
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
-    const ordersData = localStorage.getItem('orderTrackingData')
-    if (ordersData) {
-      const parsedOrders = JSON.parse(ordersData)
-      setOrders(parsedOrders)
-      processOrders(parsedOrders)
+    const checkAuth = () => {
+      const isLogged = localStorage.getItem('isLogged') === 'true'
+      setIsAuthenticated(isLogged)
+      if (!isLogged) {
+        return
+      }
+
+      const ordersData = localStorage.getItem('orderTrackingData')
+      if (ordersData) {
+        const parsedOrders = JSON.parse(ordersData)
+        setOrders(parsedOrders)
+        processOrders(parsedOrders)
+      }
     }
+
+    checkAuth()
   }, [])
 
   const processOrders = (orders: Record<string, OrderData>) => {
-    // Procesar ventas diarias
     const dailySalesMap = new Map<string, { total: number; orders: number }>()
-
-    // Procesar ventas por producto
     const productSalesMap = new Map<string, { cantidad: number; revenue: number }>()
-
-    // Procesar distribución de estados
     const statusCount = new Map<string, number>()
 
     Object.values(orders).forEach(order => {
-      // Procesar ventas diarias
       const date = new Date(order.orderDate).toLocaleDateString()
       const currentDaily = dailySalesMap.get(date) || { total: 0, orders: 0 }
       dailySalesMap.set(date, {
@@ -81,7 +87,6 @@ const DashboardVentas: React.FC = () => {
         orders: currentDaily.orders + 1,
       })
 
-      // Procesar ventas por producto
       order.products.forEach(product => {
         const currentProduct = productSalesMap.get(product.name) || { cantidad: 0, revenue: 0 }
         productSalesMap.set(product.name, {
@@ -90,7 +95,6 @@ const DashboardVentas: React.FC = () => {
         })
       })
 
-      // Contar estados
       Object.entries(order.statusDates).forEach(([status, date]) => {
         if (date) {
           statusCount.set(status, (statusCount.get(status) || 0) + 1)
@@ -114,13 +118,44 @@ const DashboardVentas: React.FC = () => {
     })
   }
 
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('isLogged')
+    setIsAuthenticated(false)
+    navigate('/')
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">Acceso Denegado</h1>
+          <p className="text-xl text-gray-600 mb-8">Debes iniciar sesión para ver esta página.</p>
+          <button
+            onClick={() => navigate('/login')}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Ir a Iniciar Sesión
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-white p-8">
       <div className="mx-auto max-w-7xl">
-        <h1 className="mb-8 text-3xl font-bold">Dashboard de Ventas</h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold">Dashboard de Ventas</h1>
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Cerrar Sesión
+          </button>
+        </div>
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-          {/* Gráficos existentes */}
           <div className="rounded-lg bg-white p-6 shadow-lg">
             <h2 className="mb-4 text-xl font-semibold">Ventas Diarias</h2>
             <ResponsiveContainer width="100%" height={300}>
@@ -162,8 +197,7 @@ const DashboardVentas: React.FC = () => {
                   cx="50%"
                   cy="50%"
                   outerRadius={80}
-                  label
-                >
+                  label>
                   {processedData.statusDistribution.map((_, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
@@ -194,7 +228,6 @@ const DashboardVentas: React.FC = () => {
           </div>
         </div>
 
-        {/* Tabla de órdenes */}
         <div className="mt-8 rounded-lg bg-white p-6 shadow-lg">
           <h2 className="mb-4 text-xl font-semibold">Todas las Órdenes</h2>
           <div className="overflow-x-auto">
@@ -231,7 +264,6 @@ const DashboardVentas: React.FC = () => {
                       <span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
                         {Object.entries(order.statusDates)
                           .reverse()
-                          // eslint-disable-next-line @typescript-eslint/no-unused-vars
                           .find(([_, date]) => date)?.[0] || 'N/A'}
                       </span>
                     </td>
