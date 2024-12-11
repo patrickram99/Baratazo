@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useLocation, useNavigate, Navigate } from 'react-router-dom'
 
 interface Producto {
@@ -22,6 +22,24 @@ interface FormData {
   referencia: string
 }
 
+interface OrderData {
+  orderResponse: {
+    order: {
+      orderNumber: string
+      createdAt: string
+      estimatedDeliveryDate: string
+    }
+    shippingAddress: {
+      addressLine1: string
+      addressLine2: string
+      description: string
+    }
+  }
+  productos: Producto[]
+  formData: FormData
+  totalFinal: number
+}
+
 interface LocationState {
   orderResponse: {
     order: {
@@ -38,6 +56,22 @@ interface LocationState {
   productos: Producto[]
   formData: FormData
   totalFinal: number
+}
+
+const saveOrderToLocalStorage = (orderData: OrderData) => {
+  try {
+    const existingOrders = localStorage.getItem('orders')
+    const orders = existingOrders ? JSON.parse(existingOrders) : []
+
+    orders.push({
+      ...orderData,
+      savedAt: new Date().toISOString(),
+    })
+
+    localStorage.setItem('orders', JSON.stringify(orders))
+  } catch (error) {
+    console.error('Error saving order to localStorage:', error)
+  }
 }
 
 const OrderProgress: React.FC<{ steps: { label: string; isCompleted: boolean }[] }> = ({
@@ -84,6 +118,18 @@ const OrdenConfirmada: React.FC = () => {
   const navigate = useNavigate()
   const state = location.state as LocationState
 
+  useEffect(() => {
+    if (state && state.orderResponse) {
+      // Guardar la orden en localStorage cuando el componente se monta
+      saveOrderToLocalStorage({
+        orderResponse: state.orderResponse,
+        productos: state.productos,
+        formData: state.formData,
+        totalFinal: state.totalFinal,
+      })
+    }
+  }, [state])
+
   if (!state || !state.orderResponse || !state.productos || !state.formData) {
     console.error('Datos incompletos en el estado:', state)
     return <Navigate to="/" replace />
@@ -92,7 +138,7 @@ const OrdenConfirmada: React.FC = () => {
   const { orderResponse, productos, formData, totalFinal } = state
 
   const formatDate = (dateString: string): string => {
-    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' }
+    const options: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric' }
     return new Date(dateString).toLocaleDateString(undefined, options)
   }
 
@@ -101,6 +147,62 @@ const OrdenConfirmada: React.FC = () => {
     { label: 'Confirmación', isCompleted: true },
     { label: 'Entrega', isCompleted: false },
   ]
+
+  const handleVerSeguimiento = () => {
+    const orderDate = new Date(orderResponse.order.createdAt)
+    const deliveryDate = new Date(orderResponse.order.estimatedDeliveryDate)
+    const totalDays = Math.ceil((deliveryDate.getTime() - orderDate.getTime()) / (1000 * 3600 * 24))
+    const daysPerStatus = Math.ceil(totalDays / 4)
+
+    const currentDate = new Date()
+    const daysSinceOrder = Math.ceil(
+      (currentDate.getTime() - orderDate.getTime()) / (1000 * 3600 * 24)
+    )
+
+    let currentStatus: 'confirmado' | 'en_proceso' | 'enviado' | 'entregado'
+
+    if (daysSinceOrder <= daysPerStatus) {
+      currentStatus = 'confirmado'
+    } else if (daysSinceOrder <= daysPerStatus * 2) {
+      currentStatus = 'en_proceso'
+    } else if (daysSinceOrder <= daysPerStatus * 3) {
+      currentStatus = 'enviado'
+    } else {
+      currentStatus = 'entregado'
+    }
+
+    navigate('/seguimiento-pedido', {
+      state: {
+        orderData: {
+          orderNumber: orderResponse.order.orderNumber,
+          orderDate: formatDate(orderResponse.order.createdAt),
+          estimatedDelivery: formatDate(orderResponse.order.estimatedDeliveryDate),
+          totalAmount: totalFinal,
+          statusDates: {
+            confirmado: formatDate(orderResponse.order.createdAt),
+            en_proceso: formatDate(
+              new Date(orderDate.getTime() + daysPerStatus * 24 * 60 * 60 * 1000).toISOString()
+            ),
+            enviado: formatDate(
+              new Date(orderDate.getTime() + daysPerStatus * 2 * 24 * 60 * 60 * 1000).toISOString()
+            ),
+            entregado: formatDate(
+              new Date(orderDate.getTime() + daysPerStatus * 3 * 24 * 60 * 60 * 1000).toISOString()
+            ),
+          },
+          products: productos.map(producto => ({
+            productId: Math.random().toString(36).substr(2, 9),
+            name: producto.nombre,
+            price: parseFloat(producto.precio.replace('S/ ', '')),
+            imageUrl: producto.imagen,
+            cantidad: producto.cantidad,
+            status: currentStatus,
+          })),
+        },
+      },
+    })
+  }
+
   const handlevolver = () => {
     navigate('/')
   }
@@ -151,7 +253,10 @@ const OrdenConfirmada: React.FC = () => {
               <p className="font-medium">Teléfono: {formData.telefono}</p>
             </div>
             <div className="flex gap-4">
-              <button className="rounded-full bg-[#1A6DAF] px-4 py-2 font-medium text-white transition-colors hover:bg-blue-700">
+              <button
+                onClick={handleVerSeguimiento}
+                className="rounded-full bg-[#1A6DAF] px-4 py-2 font-medium text-white transition-colors hover:bg-blue-700"
+              >
                 Ver seguimiento
               </button>
               <button

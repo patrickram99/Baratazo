@@ -7,9 +7,9 @@ import CarritoCompras from './components/CarritoCompras'
 import ConfirmacionDatos from './components/ConfirmacionDatos'
 import AgregarMetodoPago from './components/AgregarMetodoPago'
 import OrdenConfirmada from './components/OrdenConfirmada'
-import PagoEfectivo from './components/PagoEfectivo'
 import Footer from './components/Footer'
 import DatosProducto from './components/DatosProducto' // Importamos el componente
+import SeguimientoPedido from './components/SeguimientoPedido'
 import './App.css'
 
 const App: React.FC = () => {
@@ -66,18 +66,18 @@ const App: React.FC = () => {
               }
             />
             <Route
-              path="/pago-Efectivo"
-              element={
-                <div className="rounded-lg bg-white p-4">
-                  <PagoEfectivo />
-                </div>
-              }
-            />
-            <Route
               path="/orden-confirmada"
               element={
                 <div className="rounded-lg bg-white p-4">
                   <OrdenConfirmada />
+                </div>
+              }
+            />
+            <Route
+              path="/seguimiento-pedido"
+              element={
+                <div className="rounded-lg bg-white p-4">
+                  <SeguimientoPedido />
                 </div>
               }
             />

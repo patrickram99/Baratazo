@@ -52,16 +52,9 @@ const CarritoCompras: React.FC = () => {
   const navigate = useNavigate()
   const [productos, setProductos] = useState<Producto[]>([])
   const [totalCarrito, setTotalCarrito] = useState<number>(0)
-  const [tarifaEnvio, setTarifaEnvio] = useState<number>(21.0) // Tarifa de envío inicial
-  const [opcionEnvio, setOpcionEnvio] = useState<string>('tarifa') // o 'tarifa' por defecto
-  const [mostrarEnvio, setMostrarEnvio] = useState<boolean>(false) // Controlar la visibilidad de la sección de envío
-
-  // Cargar el carrito desde localStorage al montar el componente
-  useEffect(() => {
-    const carritoGuardado = JSON.parse(localStorage.getItem('carrito') || '[]') as Producto[]
-    setProductos(carritoGuardado)
-    calcularTotal(carritoGuardado)
-  }, [])
+  const [tarifaEnvio] = useState<number>(15.0)
+  const [opcionEnvio, setOpcionEnvio] = useState<string>('tarifa')
+  const [mostrarEnvio, setMostrarEnvio] = useState<boolean>(false)
 
   const calcularTotal = useCallback(
     (carrito: Producto[]) => {
@@ -71,13 +64,19 @@ const CarritoCompras: React.FC = () => {
         return acc + precioTotal
       }, 0)
 
-      const costoEnvio = opcionEnvio === 'recoger' ? 0 : 21.0
-      setTarifaEnvio(costoEnvio)
       setTotalCarrito(total)
     },
-    [opcionEnvio]
+    [] // No dependencies needed as it only uses the carrito parameter
   )
 
+  // Cargar el carrito desde localStorage al montar el componente
+  useEffect(() => {
+    const carritoGuardado = JSON.parse(localStorage.getItem('carrito') || '[]') as Producto[]
+    setProductos(carritoGuardado)
+    calcularTotal(carritoGuardado)
+  }, [calcularTotal]) // Added calcularTotal as dependency
+
+  // Effect for recalculating total when products change
   useEffect(() => {
     calcularTotal(productos)
   }, [productos, calcularTotal])
@@ -86,14 +85,14 @@ const CarritoCompras: React.FC = () => {
     const carrito = [...productos]
     carrito[index].cantidad = parseInt(nuevaCantidad)
     setProductos(carrito)
-    localStorage.setItem('carrito', JSON.stringify(carrito)) // Sincronizar con localStorage
+    localStorage.setItem('carrito', JSON.stringify(carrito))
     calcularTotal(carrito)
   }
 
   const eliminarProducto = (index: number) => {
     const carrito = productos.filter((_, i) => i !== index)
     setProductos(carrito)
-    localStorage.setItem('carrito', JSON.stringify(carrito)) // Sincronizar con localStorage
+    localStorage.setItem('carrito', JSON.stringify(carrito))
     calcularTotal(carrito)
   }
 
@@ -103,7 +102,7 @@ const CarritoCompras: React.FC = () => {
 
   const borrarCarrito = () => {
     setProductos([])
-    localStorage.removeItem('carrito') // Limpiar el carrito del localStorage
+    localStorage.removeItem('carrito')
     setTotalCarrito(0)
   }
 
@@ -118,11 +117,12 @@ const CarritoCompras: React.FC = () => {
     navigate('/confirmacion', {
       state: {
         productos: productosConCantidades,
-        opcionEnvio, // Se pasa correctamente la opción de envío seleccionada
+        opcionEnvio,
         totalFinal: totalFinal,
       },
     })
   }
+
   const orderSteps = [
     { label: 'Carrito', isCompleted: true },
     { label: 'Confirmación de Pago', isCompleted: false },
@@ -278,22 +278,7 @@ const CarritoCompras: React.FC = () => {
                     </label>
                     <p className="ml-6 text-sm text-gray-500">
                       El precio puede variar dependiendo del artículo/destino. El personal de la
-                      tienda se comunicará con usted. S/ 21.00
-                    </p>
-
-                    <label className="mt-4 flex items-center">
-                      <input
-                        type="radio"
-                        name="envio"
-                        value="recoger"
-                        checked={opcionEnvio === 'recoger'}
-                        onChange={() => setOpcionEnvio('recoger')}
-                        className="mr-2"
-                      />
-                      Recoger en tienda
-                    </label>
-                    <p className="ml-6 text-sm text-gray-500">
-                      Elija esta opción si quiere recoger el pedido.
+                      tienda se comunicará con usted. S/ 15.00
                     </p>
                   </div>
                 </div>

@@ -60,7 +60,7 @@ const ConfirmacionDatos: React.FC = () => {
       total + parseFloat(producto.precio.replace('S/ ', '')) * (producto.cantidad || 1),
     0
   )
-  const tarifaEnvio = 21.0 // Asumiendo un costo fijo de envío
+  const tarifaEnvio = 15.0 // Asumiendo un costo fijo de envío
   const envio = opcionEnvio === 'recoger' ? 'S/ 0.00' : `S/ ${tarifaEnvio.toFixed(2)}`
 
   const [usarDatosCuenta, setUsarDatosCuenta] = useState(false)
