@@ -221,7 +221,7 @@ model PaymentInfo {
 model Coupon {
   id            Int      @id @default(autoincrement())
   code          String   @unique
-  discountType  String // percentage or fixed amount
+  discountType  String
   discountValue Float
   minPurchase   Float?
   maxDiscount   Float?
@@ -299,7 +299,7 @@ model ReturnRequest {
 
 model SEOMetadata {
   id          Int     @id @default(autoincrement())
-  entityType  String // 'product' or 'category'
+  entityType  String
   entityId    Int
   title       String?
   description String?
