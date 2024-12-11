@@ -54,7 +54,6 @@ const ConfirmacionDatos: React.FC = () => {
     productos: Producto[]
     totalFinal: number
   }
-main
   const [usarDatosCuenta, setUsarDatosCuenta] = useState(false)
   const [formData, setFormData] = useState({
     email: '',
