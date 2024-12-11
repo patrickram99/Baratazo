@@ -37,7 +37,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     ) {
       localStorage.setItem('token', 'admin-token') // Simula un token
       onLogin() // Llama a la función pasada como prop
-      navigate('/admin') // Redirige a la página /admin después del login exitoso
+      navigate('/dashboard') // Redirige a la página /admin después del login exitoso
     } else {
       setError('Correo electrónico, nombre de usuario o contraseña incorrectos')
     }
