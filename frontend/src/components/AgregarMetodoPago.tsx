@@ -81,17 +81,24 @@ const AgregarMetodoPago: React.FC = () => {
   const [cvv, setCvv] = useState('')
 
   const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCardNumber(e.target.value)
+    const value = e.target.value.replace(/[^0-9\s]/g, '')
+    setCardNumber(value)
   }
 
   const handleExpiryDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setExpiryDate(e.target.value)
+    const value = e.target.value.replace(/[^0-9\/]/g, '')
+    if (/^\d{0,2}\/?\d{0,2}$/.test(value)) {
+      setExpiryDate(value)
+    }
   }
 
   const handleCvvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCvv(e.target.value)
+    // Solo permitir números de 3 o 4 dígitos
+    const value = e.target.value.replace(/[^0-9]/g, '')
+    if (value.length <= 4) {
+      setCvv(value)
+    }
   }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
