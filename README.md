@@ -74,77 +74,27 @@ npx prisma db push
 5. Añadir datos de prueba, debe hacerse manualmente desde PgAdmin o el gestor de PostgreSQL que usen
    
 ```
-USE baratazo_db;
+-- First, let's create a category for these products
+INSERT INTO "Category" (name, description) 
+VALUES ('Electronics', 'Electronic devices and components')
+RETURNING id;
 
--- Limpiar tablas existentes
-DELETE FROM "Inventory";
-DELETE FROM "ProductVariant";
-DELETE FROM "Product";
-DELETE FROM "Category";
+-- Assuming the above query returned 1 as the category id
+-- Now, let's insert the products
 
--- Reiniciar las secuencias de autoincremento
-ALTER SEQUENCE "Category_id_seq" RESTART WITH 1;
-ALTER SEQUENCE "Product_id_seq" RESTART WITH 1;
-ALTER SEQUENCE "ProductVariant_id_seq" RESTART WITH 1;
-ALTER SEQUENCE "Inventory_id_seq" RESTART WITH 1;
-
--- Insertar categorías de muestra
-INSERT INTO "Category" (id, name, description)
+INSERT INTO "Product" (name, description, price, "categoryId", brand, model, specifications, "imageUrls", "createdAt", "updatedAt")
 VALUES 
-(1, 'CPUs', 'Central Processing Units'),
-(2, 'GPUs', 'Graphics Processing Units'),
-(3, 'Motherboards', 'Computer Motherboards'),
-(4, 'RAM', 'Random Access Memory');
-
--- Insertar productos de muestra con IDs explícitos
-INSERT INTO "Product" (id, name, description, price, "categoryId", brand, model, specifications, "imageUrls", "createdAt", "updatedAt")
-VALUES 
-(1, 'Intel Core i7-11700K', 'High-performance CPU for gaming and productivity', 349.99, 1, 'Intel', 'i7-11700K', 
- '{"cores": 8, "threads": 16, "base_clock": "3.6 GHz", "boost_clock": "5.0 GHz"}', 
- ARRAY['https://example.com/i7-11700k-image.jpg'], 
- CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-
-(2, 'AMD Ryzen 9 5900X', 'Powerful CPU for enthusiasts and professionals', 549.99, 1, 'AMD', 'Ryzen 9 5900X', 
- '{"cores": 12, "threads": 24, "base_clock": "3.7 GHz", "boost_clock": "4.8 GHz"}', 
- ARRAY['https://example.com/ryzen-9-5900x-image.jpg'], 
- CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-
-(3, 'NVIDIA GeForce RTX 3080', 'High-end graphics card for 4K gaming', 699.99, 2, 'NVIDIA', 'GeForce RTX 3080', 
- '{"memory": "10GB GDDR6X", "cuda_cores": 8704, "boost_clock": "1.71 GHz"}', 
- ARRAY['https://example.com/rtx-3080-image.jpg'], 
- CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-
-(4, 'ASUS ROG Strix B550-F Gaming', 'Feature-rich motherboard for AMD Ryzen CPUs', 189.99, 3, 'ASUS', 'ROG Strix B550-F Gaming', 
- '{"socket": "AM4", "form_factor": "ATX", "memory_slots": 4}', 
- ARRAY['https://example.com/rog-strix-b550f-image.jpg'], 
- CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-
-(5, 'Corsair Vengeance LPX 32GB', 'High-performance DDR4 RAM kit', 159.99, 4, 'Corsair', 'Vengeance LPX', 
- '{"capacity": "32GB", "speed": "3200MHz", "latency": "CL16"}', 
- ARRAY['https://example.com/corsair-vengeance-lpx-image.jpg'], 
- CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
--- Insertar variantes de productos
-INSERT INTO "ProductVariant" ("productId", sku, name, price)
-VALUES 
-(1, 'I7-11700K-BOX', 'Intel Core i7-11700K Boxed', 349.99),
-(1, 'I7-11700K-TRAY', 'Intel Core i7-11700K Tray', 339.99),
-(2, 'R9-5900X-BOX', 'AMD Ryzen 9 5900X Boxed', 549.99),
-(3, 'RTX3080-10G', 'NVIDIA GeForce RTX 3080 10GB', 699.99),
-(3, 'RTX3080-12G', 'NVIDIA GeForce RTX 3080 12GB', 799.99),
-(4, 'ROG-B550F-GAMING', 'ASUS ROG Strix B550-F Gaming', 189.99),
-(5, 'CMK32GX4M2E3200C16', 'Corsair Vengeance LPX 32GB (2x16GB)', 159.99);
-
--- Insertar inventario de muestra
-INSERT INTO "Inventory" ("productId", "variantId", quantity, location)
-VALUES 
-(1, 1, 50, 'Warehouse A'),
-(1, 2, 30, 'Warehouse B'),
-(2, 3, 40, 'Warehouse A'),
-(3, 4, 25, 'Warehouse C'),
-(3, 5, 15, 'Warehouse C'),
-(4, 6, 60, 'Warehouse B'),
-(5, 7, 100, 'Warehouse A');
+('Laptop Gamer', 'Potente laptop para gaming', 1299.99, 1, 'Generic', 'Standard', '{}', ARRAY['img/laptop1.jpg'], CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('PC de Escritorio', 'Computadora de alto rendimiento', 999.99, 1, 'Generic', 'Standard', '{}', ARRAY['img/pc1.jpg'], CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Monitor 4K', 'Monitor de alta resolución', 499.99, 1, 'Generic', 'Standard', '{}', ARRAY['img/monitor1.jpg'], CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Teclado Mecánico', 'Teclado para gamers', 129.99, 1, 'Generic', 'Standard', '{}', ARRAY['img/teclado1.jpg'], CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Mouse Óptico', 'Mouse de alta precisión', 59.99, 1, 'Generic', 'Standard', '{}', ARRAY['img/mouse1.jpg'], CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Auriculares Gaming', 'Auriculares con micrófono', 89.99, 1, 'Generic', 'Standard', '{}', ARRAY['img/auriculares1.jpg'], CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Tarjeta Gráfica', 'GPU de última generación', 699.99, 1, 'Generic', 'Standard', '{}', ARRAY['img/gpu1.jpg'], CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('SSD 1TB', 'Disco de estado sólido', 149.99, 1, 'Generic', 'Standard', '{}', ARRAY['img/ssd1.jpg'], CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Fuente de Poder', 'Fuente modular 750W', 129.99, 1, 'Generic', 'Standard', '{}', ARRAY['img/fuente1.jpg'], CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Gabinete Gaming', 'Case con iluminación RGB', 99.99, 1, 'Generic', 'Standard', '{}', ARRAY['img/gabinete1.jpg'], CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Webcam HD', 'Cámara para streaming', 79.99, 1, 'Generic', 'Standard', '{}', ARRAY['img/webcam1.jpg'], CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 ```
 
 ## Ejecutar el proyecto

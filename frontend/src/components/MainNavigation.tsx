@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 
 const MainNavigation: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const navigate = useNavigate() // Asegúrate de que `navigate` esté inicializado correctamente.
+  const [isAuthenticated, setIsAuthenticated] = useState(false) // Estado para verificar si el usuario está autenticado
+  const navigate = useNavigate()
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -14,7 +15,16 @@ const MainNavigation: React.FC = () => {
   }
 
   const CerrarSesion = () => {
-    navigate('/') // Cambia Navigate por navigate
+    setIsAuthenticated(false) // Cambia el estado a no autenticado
+    navigate('/') // Redirige a la página principal después de cerrar sesión
+  }
+
+  const handleUserClick = () => {
+    if (isAuthenticated) {
+      navigate('/usuario') // Redirige a la página de usuario si está autenticado
+    } else {
+      navigate('/login') // Si no está autenticado, redirige a la página de login
+    }
   }
 
   return (
@@ -82,7 +92,7 @@ const MainNavigation: React.FC = () => {
                 className="mb-2 rounded-full border border-[#FDCD11] bg-transparent px-6 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100"
                 style={{ color: '#FDCD11' }}
               >
-                CerrarSesion
+                Cerrar Sesión
               </button>
               <button className="p-2 text-black hover:text-gray-700">
                 <i className="fas fa-search"></i>
@@ -90,7 +100,8 @@ const MainNavigation: React.FC = () => {
               <Link to="/carrito" className="p-2 text-black hover:text-gray-700">
                 <i className="fas fa-shopping-cart"></i>
               </Link>
-              <button className="p-2 text-black hover:text-gray-700">
+              {/* Ícono de usuario que redirige dependiendo si está autenticado */}
+              <button onClick={handleUserClick} className="p-2 text-black hover:text-gray-700">
                 <i className="fas fa-user"></i>
               </button>
             </div>
