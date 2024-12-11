@@ -23,9 +23,9 @@ const MainNavigation: React.FC<MainNavigationProps> = ({ isLoggedIn, onLogout })
     navigate('/') // Redirige a la página principal
   }
 
-  const handleWishList = () => {
-    navigate('/wishlist') // Ajusta la ruta según tus necesidades
-  }
+  // const handleWishList = () => {
+  //   navigate('/wishlist') // Ajusta la ruta según tus necesidades
+  // }
 
   const navigationItems = [
     { name: 'Laptops', path: '#' },
@@ -34,7 +34,7 @@ const MainNavigation: React.FC<MainNavigationProps> = ({ isLoggedIn, onLogout })
     { name: 'Periféricos', path: '#' },
     { name: 'Subasta', path: '#' },
     { name: 'Promociones', path: '#' },
-    { name: 'Dashboard', path: '/dashboard' },
+    // { name: 'Dashboard', path: '/dashboard' },
   ]
 
   return (
@@ -66,9 +66,11 @@ const MainNavigation: React.FC<MainNavigationProps> = ({ isLoggedIn, onLogout })
       <nav className="bg-white shadow-md">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 justify-between">
-            <div className="flex items-center">
-              <img src="/img/logo.png" alt="Logo" className="h-8 w-auto" />
-            </div>
+            <Link to="/">
+              <div className="flex items-center">
+                <img src="/img/logo.png" alt="Logo" className="h-14 w-auto" />
+              </div>
+            </Link>
             <div className="hidden items-center space-x-4 md:flex">
               {navigationItems.map(item => (
                 <Link
@@ -81,15 +83,15 @@ const MainNavigation: React.FC<MainNavigationProps> = ({ isLoggedIn, onLogout })
               ))}
             </div>
             <div className="hidden items-center space-x-1 md:flex">
-              <button
+              {/* <button
                 onClick={handleWishList}
                 className="mb-2 rounded-full border border-[#1A6DAF] bg-transparent px-6 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100"
                 style={{ color: '#1A6DAF' }}
               >
                 Lista de Deseos
-              </button>
+              </button> */}
 
-              {isLoggedIn ? (
+              {/* {isLoggedIn ? (
                 <button
                   onClick={handleLogout}
                   className="mb-2 rounded-full border border-[#FDCD11] bg-transparent px-6 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100"
@@ -105,7 +107,7 @@ const MainNavigation: React.FC<MainNavigationProps> = ({ isLoggedIn, onLogout })
                 >
                   Iniciar Sesión
                 </button>
-              )}
+              )} */}
 
               <button className="p-2 text-black hover:text-gray-700">
                 <i className="fas fa-search"></i>
