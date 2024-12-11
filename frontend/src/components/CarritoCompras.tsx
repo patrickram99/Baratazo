@@ -56,27 +56,22 @@ const CarritoCompras: React.FC = () => {
   const [opcionEnvio, setOpcionEnvio] = useState<string>('tarifa')
   const [mostrarEnvio, setMostrarEnvio] = useState<boolean>(false)
 
-  const calcularTotal = useCallback(
-    (carrito: Producto[]) => {
-      const total = carrito.reduce((acc, producto) => {
-        const precio = parseFloat(producto.precio.replace('S/ ', '').replace(',', '.'))
-        const precioTotal = precio * (producto.cantidad || 1)
-        return acc + precioTotal
-      }, 0)
+  const calcularTotal = useCallback((carrito: Producto[]) => {
+    const total = carrito.reduce((acc, producto) => {
+      const precio = parseFloat(producto.precio.replace('S/ ', '').replace(',', '.'))
+      const precioTotal = precio * (producto.cantidad || 1)
+      return acc + precioTotal
+    }, 0)
 
-      setTotalCarrito(total)
-    },
-    [] // No dependencies needed as it only uses the carrito parameter
-  )
+    setTotalCarrito(total)
+  }, [])
 
-  // Cargar el carrito desde localStorage al montar el componente
   useEffect(() => {
     const carritoGuardado = JSON.parse(localStorage.getItem('carrito') || '[]') as Producto[]
     setProductos(carritoGuardado)
     calcularTotal(carritoGuardado)
-  }, [calcularTotal]) // Added calcularTotal as dependency
+  }, [calcularTotal])
 
-  // Effect for recalculating total when products change
   useEffect(() => {
     calcularTotal(productos)
   }, [productos, calcularTotal])
@@ -107,6 +102,8 @@ const CarritoCompras: React.FC = () => {
   }
 
   const comprar = () => {
+    if (productos.length === 0) return
+
     const productosConCantidades = productos.map(producto => ({
       ...producto,
       cantidad: producto.cantidad || 1,
@@ -304,7 +301,12 @@ const CarritoCompras: React.FC = () => {
 
             <button
               onClick={comprar}
-              className="mt-6 w-full rounded-full bg-[#1A6DAF] px-6 py-2 text-white transition duration-300 hover:bg-blue-600"
+              disabled={productos.length === 0}
+              className={`mt-6 w-full rounded-full px-6 py-2 text-white transition duration-300 ${
+                productos.length === 0
+                  ? 'cursor-not-allowed bg-gray-400'
+                  : 'bg-[#1A6DAF] hover:bg-blue-600'
+              }`}
             >
               Realizar compra
             </button>
