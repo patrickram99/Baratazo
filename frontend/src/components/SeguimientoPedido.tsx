@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react'
-import { Check, Package, Truck, Box } from 'lucide-react'
+import React, { useEffect, useRef } from 'react'
+import { Check, Package, Truck, Box, Download, Mail } from 'lucide-react'
 import { useLocation, Navigate } from 'react-router-dom'
+import html2canvas from 'html2canvas'
+import emailjs from 'emailjs-com'
 
 interface Product {
   productId: string
@@ -173,6 +175,7 @@ const SeguimientoPedido: React.FC = () => {
   const location = useLocation()
   const state = location.state as OrderState
   const orderDataFromState = state?.orderData
+  const componentRef = useRef<HTMLDivElement>(null)
 
   // Check localStorage for existing order data
   const orderDataFromStorage = orderDataFromState?.orderNumber
@@ -199,9 +202,45 @@ const SeguimientoPedido: React.FC = () => {
     { label: 'Entrega', isCompleted: true },
   ]
 
+  const handleDownloadImage = () => {
+    if (componentRef.current) {
+      html2canvas(componentRef.current).then((canvas) => {
+        const link = document.createElement('a')
+        link.download = `pedido-${orderData.orderNumber}.png`
+        link.href = canvas.toDataURL()
+        link.click()
+      })
+    }
+  }
+
+  const handleSendEmail = () => {
+    const templateParams = {
+      to_email: 'correo@ejemplo.com', // Reemplaza con el correo del destinatario
+      order_number: orderData.orderNumber,
+      order_date: orderData.orderDate,
+      estimated_delivery: orderData.estimatedDelivery,
+      total_amount: orderData.totalAmount.toFixed(2),
+    }
+
+    emailjs.send(
+      'YOUR_SERVICE_ID', // Reemplaza con tu Service ID de EmailJS
+      'YOUR_TEMPLATE_ID', // Reemplaza con tu Template ID de EmailJS
+      templateParams,
+      'YOUR_USER_ID' // Reemplaza con tu User ID de EmailJS
+    )
+    .then((response) => {
+      console.log('Email sent successfully:', response.status, response.text)
+      alert('Email enviado correctamente')
+    })
+    .catch((error) => {
+      console.error('Error sending email:', error)
+      alert('Error al enviar el email')
+    })
+  }
+
   return (
     <div className="min-h-screen bg-white p-5">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-6xl" ref={componentRef}>
         <nav className="text-black-500 mb-3 flex items-center text-sm">
           <span>Home</span>
           <span className="mx-2">/</span>
@@ -279,6 +318,22 @@ const SeguimientoPedido: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="mt-4 flex justify-center space-x-4">
+        <button
+          onClick={handleDownloadImage}
+          className="flex items-center rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+        >
+          <Download className="mr-2 h-5 w-5" />
+          Descargar como PNG
+        </button>
+        {/* <button
+          onClick={handleSendEmail}
+          className="flex items-center rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
+        >
+          <Mail className="mr-2 h-5 w-5" />
+          Enviar por correo
+        </button> */}
       </div>
     </div>
   )

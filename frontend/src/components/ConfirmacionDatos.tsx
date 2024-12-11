@@ -208,7 +208,7 @@ const ConfirmacionDatos: React.FC = () => {
                 value={formData.email}
                 onChange={handleInputChange}
               />
-              <div className="ml-4 mt-0 flex items-center">
+              {/* <div className="ml-4 mt-0 flex items-center">
                 <input
                   type="checkbox"
                   id="usar-datos-cuenta"
@@ -219,7 +219,7 @@ const ConfirmacionDatos: React.FC = () => {
                 <label htmlFor="usar-datos-cuenta" className="font-semibold">
                   Usar datos predefinidos de la cuenta?
                 </label>
-              </div>
+              </div> */}
             </div>
 
             <div className="-mx-2 mb-6 flex flex-wrap">
