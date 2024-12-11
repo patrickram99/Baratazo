@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import MainNavigation from './components/MainNavigation'
 import Carousel from './components/Carousel'
@@ -8,15 +8,26 @@ import ConfirmacionDatos from './components/ConfirmacionDatos'
 import AgregarMetodoPago from './components/AgregarMetodoPago'
 import OrdenConfirmada from './components/OrdenConfirmada'
 import Footer from './components/Footer'
-import DatosProducto from './components/DatosProducto' // Importamos el componente
+import DatosProducto from './components/DatosProducto'
 import SeguimientoPedido from './components/SeguimientoPedido'
+import Login from './components/Login'
 import './App.css'
 
 const App: React.FC = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  const handleLogin = () => {
+    setIsLoggedIn(true)
+  }
+
+  const handleLogout = () => {
+    setIsLoggedIn(false)
+  }
+
   return (
     <Router>
       <div className="flex min-h-screen flex-col bg-[#FFFFFF]">
-        <MainNavigation />
+        <MainNavigation isLoggedIn={isLoggedIn} onLogout={handleLogout} />
         <main className="container mx-auto flex-grow px-4 py-8">
           <Routes>
             <Route
@@ -33,6 +44,7 @@ const App: React.FC = () => {
                 </div>
               }
             />
+            <Route path="/login" element={<Login onLogin={handleLogin} />} />
             <Route
               path="/producto/:nombre"
               element={
