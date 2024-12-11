@@ -1,20 +1,30 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-const MainNavigation: React.FC = () => {
+interface MainNavigationProps {
+  isLoggedIn: boolean
+  onLogout: () => void
+}
+
+const MainNavigation: React.FC<MainNavigationProps> = ({ isLoggedIn, onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const navigate = useNavigate() // Asegúrate de que `navigate` esté inicializado correctamente.
+  const navigate = useNavigate()
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
   }
 
-  const WishList = () => {
-    navigate('/') // Cambia Navigate por navigate
+  const handleLogin = () => {
+    navigate('/login') // Redirige al componente de login
   }
 
-  const CerrarSesion = () => {
-    navigate('/') // Cambia Navigate por navigate
+  const handleLogout = () => {
+    onLogout() // Llama al método de logout pasado por props
+    navigate('/') // Redirige a la página principal
+  }
+
+  const handleWishList = () => {
+    navigate('/wishlist') // Ajusta la ruta según tus necesidades
   }
 
   const navigationItems = [
@@ -72,20 +82,31 @@ const MainNavigation: React.FC = () => {
             </div>
             <div className="hidden items-center space-x-1 md:flex">
               <button
-                onClick={WishList}
+                onClick={handleWishList}
                 className="mb-2 rounded-full border border-[#1A6DAF] bg-transparent px-6 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100"
                 style={{ color: '#1A6DAF' }}
               >
                 Lista de Deseos
               </button>
 
-              <button
-                onClick={CerrarSesion}
-                className="mb-2 rounded-full border border-[#FDCD11] bg-transparent px-6 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100"
-                style={{ color: '#FDCD11' }}
-              >
-                Cerrar Sesion
-              </button>
+              {isLoggedIn ? (
+                <button
+                  onClick={handleLogout}
+                  className="mb-2 rounded-full border border-[#FDCD11] bg-transparent px-6 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100"
+                  style={{ color: '#FDCD11' }}
+                >
+                  Cerrar Sesión
+                </button>
+              ) : (
+                <button
+                  onClick={handleLogin}
+                  className="mb-2 rounded-full border border-[#FDCD11] bg-transparent px-6 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100"
+                  style={{ color: '#FDCD11' }}
+                >
+                  Iniciar Sesión
+                </button>
+              )}
+
               <button className="p-2 text-black hover:text-gray-700">
                 <i className="fas fa-search"></i>
               </button>
@@ -155,9 +176,21 @@ const MainNavigation: React.FC = () => {
             </div>
             <div className="border-t border-gray-200 pb-3 pt-4">
               <div className="flex items-center px-5">
-                <button className="mb-2 w-full rounded border border-black bg-transparent px-4 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100">
-                  Iniciar Sesión
-                </button>
+                {isLoggedIn ? (
+                  <button
+                    onClick={handleLogout}
+                    className="mb-2 w-full rounded border border-black bg-transparent px-4 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100"
+                  >
+                    Cerrar Sesión
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleLogin}
+                    className="mb-2 w-full rounded border border-black bg-transparent px-4 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100"
+                  >
+                    Iniciar Sesión
+                  </button>
+                )}
               </div>
               <div className="flex items-center px-5">
                 <button className="mb-2 w-full rounded border border-black bg-transparent px-4 py-2 font-semibold text-black transition duration-300 hover:bg-gray-100">
